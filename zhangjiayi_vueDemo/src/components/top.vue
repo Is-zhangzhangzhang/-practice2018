@@ -1,5 +1,46 @@
 <template>
-<div class="header-wrap">
+<div id="header-wrap">
+    <div>
+        <h1>Training</h1>
+        <a href="#">{{topLogin}}</a>
+    </div>
 
 </div>
 </template>
+<script>
+    export default{
+        name:'login',
+        data:function(){
+            return {
+                topLogin:'登录'
+            }
+        }
+    }
+</script>
+<style>
+    #header-wrap{
+        width: 100%;
+        height: 56px;
+        background-color: rgb(39,42,46);
+        color:#fff;
+    }
+    #header-wrap div{
+        width:80%;
+        height:100%;
+        margin: 0 auto;
+    }
+    #header-wrap h1{
+        float: left;
+        font-size: 40px;
+        display: inline-block;
+    }
+    #header-wrap a{
+        float:right;
+        line-height: 56px;
+        color:#fff;
+        font-size: 1.5em;
+    }
+    #header-wrap a:hover{
+        color: gray;
+    }
+</style>
