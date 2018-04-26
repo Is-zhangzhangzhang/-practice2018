@@ -31,11 +31,13 @@
     }
     #header-wrap h1{
         float: left;
-        font-size: 40px;
         display: inline-block;
+        font-size: 40px;
+        text-shadow: 0 0 5px;
     }
     #header-wrap a{
         float:right;
+        padding-top: 5px;
         line-height: 56px;
         color:#fff;
         font-size: 1.5em;
