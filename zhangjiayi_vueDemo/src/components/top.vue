@@ -21,7 +21,7 @@
     #header-wrap{
         width: 100%;
         height: 56px;
-        background-color: rgb(39,42,46);
+        background-color: rgb(63,81,181);
         color:#fff;
     }
     #header-wrap div{
@@ -43,6 +43,6 @@
         font-size: 1.5em;
     }
     #header-wrap a:hover{
-        color: gray;
+        text-shadow: 0 0 5px;
     }
 </style>

@@ -2,9 +2,28 @@
     <div class="login-wrap">
          <top></top>
          <div class="login-box">
-            <div class="loginDiv">
-                
-            </div>
+                 <Form ref="loginData" v-bind:model="loginData">
+                        <FormItem prop="user">
+                            <Input type="text" v-model="loginData.user"  placeholder="用户名">
+                                   <Icon type="ios-person-outline" slot="prepend"></Icon>
+                            </Input>
+                        </FormItem>
+                        <FormItem prop="password">
+                                <Input type="password" v-model="loginData.password" placeholder="密码">
+                                       <Icon type="ios-locked-outline" slot="prepend"></Icon>
+                                </Input>
+                        </FormItem>
+                        <FormItem>
+                                <span slot="label" v-bind:class="{remember:loginData.switch}">记住密码?</span>
+                                <i-switch v-model="loginData.switch">
+                                        <span slot="open">On</span>
+                                        <span slot="close">Off</span>
+                                </i-switch>
+                        </FormItem>
+                        <FormItem>
+                                <Button type="primary"  long size="large" @click="handleSubmit(loginData)">登录</Button>
+                        </FormItem>
+                 </Form>
          </div>
     </div>
 </template>
@@ -15,26 +34,57 @@
         name:'login',
         components:{
             top
+        },
+         data:function(){
+            return{
+                loginData: {
+                    user:'admin',
+                    password:'111111',
+                    switch:true,
+                }
+            }
+         },
+         methods:{
+            handleSubmit(data){
+                    console.log("ok");
+                    this.$router.push({path:'/main'})
+            }
         }
-    }
+}
 </script>
 
 <style type="text/css" media="screen">
     .login-wrap{
-        background-image: url('../assets/bg.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        min-height: 100vh;
+
     }
     .login-box{
-        width: 100%;
-    }
-    .loginDiv{
-        width:30%;
+        width:33%;
+        min-width: 430px;
         height: 300px;
         margin:0 auto;
         margin-top: 8%;
-        background-color: rgba(39,40,34,0.6);
+/*        border: 1px solid gray;
+        box-sizing: border-box;
+        border-radius:10px;
+        box-shadow: 0 0 5px;*/
     }
-    
+    .login-wrap .ivu-input-group-prepend{
+        font-size: 1.6rem;
+        width:10%;
+        min-width: 20px;
+    }
+    .login-wrap .ivu-input{
+        font-size:1.2rem;
+        padding:20px;
+    }
+    .ivu-form-item-label span{
+        color:gray;
+        font-size: 0.9rem;
+    }
+    .remember{
+        color: rgb(45,140,240) !important;
+    }
+    .login-wrap .ivu-btn-large{
+        font-size: 1.2rem;
+    }
 </style>
