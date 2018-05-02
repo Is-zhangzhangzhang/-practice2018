@@ -5,13 +5,16 @@
                     <div class="main-search">
                         <Input v-model="search" icon="ios-search" size="large" placeholder="搜索……"></Input>
                     </div>
+                    <!-- 主界面表格 -->
                     <div class="main-table">
-                             <Table  border stripe v-bind:columns="col" :data="dataList"></Table>
+                             <Table  highlight-row border stripe v-bind:columns="col" :data="dataList" @on-row-click="getCurrentRow"></Table>
                              <Button class="table-additem" type="primary" size="large" @click="addItem()">添加项目</Button>
                     </div>
             </div>
-            <modal-component v-modal="modalShow"></modal-component>
+            <modal-component :show="modalShow" :mode="mode" :dataList="dataList" @modalClose="changeModalShow" :currentRow="currentRow">
+            </modal-component>
       </div>
+
 </template>
 
 <script>
@@ -27,6 +30,8 @@ import modalComponent  from './modalcomponent.vue'
             return{
                 search:'',
                 modalShow:false,
+                mode:0,  //1表新建项目，2代表修改项目
+                currentRow:{},
                 col:[
                     {
                         title:'项目名称',
@@ -54,8 +59,8 @@ import modalComponent  from './modalcomponent.vue'
                                         on:{
                                             click: () =>
                                             {
-                                                this.modalShow=true
-                                                this.mdfProject()
+                                                this.modalShow=true;
+                                                this.mdfProject();
                                             }
                                         }
                                 },'编辑'),
@@ -81,30 +86,39 @@ import modalComponent  from './modalcomponent.vue'
                         name:'项目一',
                         type:'A类型',
                         days:'0',
-                        action:'hh'
                     },
                     {
                         name:'项目一',
                         type:'A类型',
                         days:'0',
-                        action:'hh'
                     }
                 ]
             }
         },
         methods:{
+            changeModalShow:function(e){
+                this.modalShow=false;
+                console.log("父组件："+this.modalShow);
+            },
             deleteItem:function(index)
             {
                 this.dataList.splice(index,1);
             },
+            // 添加项目
             addItem:function()
-            {
+            {   
                 this.modalShow=true;
-                console.log("addok"+this.modalShow)
+                this.mode =1;
             },
-            mdfProject:function()
-            {
-                console.log("mdfok"+this.modalShow)
+            //  编辑项目
+            mdfProject:function(){
+                this.modalShow=true;
+                this.mode =2;
+
+            },
+            getCurrentRow(currentRow){
+                this.currentRow = currentRow;
+                console.log(this.currentRow);
             }
         }
     }
