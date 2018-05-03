@@ -7,11 +7,11 @@
                     </div>
                     <!-- 主界面表格 -->
                     <div class="main-table">
-                             <Table  highlight-row border stripe v-bind:columns="col" :data="dataList" @on-row-click="getCurrentRow"></Table>
+                             <Table  highlight-row border stripe v-bind:columns="col" :data="list" @on-row-click="getCurrentRow"></Table>
                              <Button class="table-additem" type="primary" size="large" @click="addItem()">添加项目</Button>
                     </div>
             </div>
-            <modal-component :show="modalShow" :mode="mode" :dataList="list" @modalClose="changeModalShow" :currentRow="currentRow" @sentEditData="getEditData">
+            <modal-component :show="modalShow" :mode="mode" :dataList="dataList" @modalClose="changeModalShow" :currentRow="currentRow" @sentEditData="getEditData">
             </modal-component>
       </div>
 
@@ -26,6 +26,10 @@ import modalComponent  from './modalcomponent.vue'
             top,
             modalComponent
         },
+        mounted:function(){
+            this.list = this.dataList;
+            //console.log("aaa");
+        },
         data:function(){
             return{
                 search:'',
@@ -34,7 +38,7 @@ import modalComponent  from './modalcomponent.vue'
                 currentRow:{},
                 currentName:'',
                 listIndex:0,
-                list:this.dataList,
+                list:[],
                 filterlist:[],
                 item: {
                         name:'',
@@ -100,6 +104,16 @@ import modalComponent  from './modalcomponent.vue'
                         name:'2',
                         type:'A类型',
                         days:'0',
+                    },
+                    {
+                        name:'项目1',
+                        type:'B类型',
+                        days:'0',
+                    },
+                    {
+                        name:'项目3',
+                        type:'C类型',
+                        days:'1',
                     }
                 ]
             }
@@ -107,17 +121,26 @@ import modalComponent  from './modalcomponent.vue'
         methods:{
             keySearch(){
                 let i,flag=0;
+                this.filterlist=[];
                 for(i=0;i<this.dataList.length;i++)
                 {
                     for( let key in this.dataList[i]){
-                        if( (this.dataList[i][key]).indexOf(this.search))
-                            flag=1;
+                        console.log(this.dataList[i][key].indexOf(this.search))
+                        if( (this.dataList[i][key]).indexOf(this.search) > -1)
+                        {
+                             flag=1;
+                             break;
+                        }
                     }
-                     if(flag){
-                        this.filterlist.push(this.dataList[i])
+                     if(flag == 1){
+                        this.filterlist.push(this.dataList[i]);
+                        flag =0 ;
                      }  // console.log( this.dataList[i][key]);
                 }
+                console.log("过滤后：")
                 console.log(this.filterlist);
+                this.list = [];
+                this.list = this.filterlist;
             },
             changeModalShow:function(e){
                 this.modalShow=false;
