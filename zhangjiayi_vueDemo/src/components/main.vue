@@ -3,7 +3,7 @@
             <top></top>
             <div class="main-wrap-container">
                     <div class="main-search">
-                        <Input v-model="search" icon="ios-search" size="large" placeholder="搜索……">{{search}}</Input>
+                        <Input v-model="search" icon="ios-search" size="large" placeholder="搜索……" @on-click="keySearch">{{search}}</Input>
                     </div>
                     <!-- 主界面表格 -->
                     <div class="main-table">
@@ -11,7 +11,7 @@
                              <Button class="table-additem" type="primary" size="large" @click="addItem()">添加项目</Button>
                     </div>
             </div>
-            <modal-component :show="modalShow" :mode="mode" :dataList="dataList" @modalClose="changeModalShow" :currentRow="currentRow" @sentEditData="getEditData">
+            <modal-component :show="modalShow" :mode="mode" :dataList="list" @modalClose="changeModalShow" :currentRow="currentRow" @sentEditData="getEditData">
             </modal-component>
       </div>
 
@@ -34,6 +34,8 @@ import modalComponent  from './modalcomponent.vue'
                 currentRow:{},
                 currentName:'',
                 listIndex:0,
+                list:this.dataList,
+                filterlist:[],
                 item: {
                         name:'',
                         type:'',
@@ -103,6 +105,20 @@ import modalComponent  from './modalcomponent.vue'
             }
         },
         methods:{
+            keySearch(){
+                let i,flag=0;
+                for(i=0;i<this.dataList.length;i++)
+                {
+                    for( let key in this.dataList[i]){
+                        if( (this.dataList[i][key]).indexOf(this.search))
+                            flag=1;
+                    }
+                     if(flag){
+                        this.filterlist.push(this.dataList[i])
+                     }  // console.log( this.dataList[i][key]);
+                }
+                console.log(this.filterlist);
+            },
             changeModalShow:function(e){
                 this.modalShow=false;
                 console.log("父组件："+this.modalShow);
