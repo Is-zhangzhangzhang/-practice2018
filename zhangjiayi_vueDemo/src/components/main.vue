@@ -11,7 +11,7 @@
                              <Button class="table-additem" type="primary" size="large" @click="addItem()">添加项目</Button>
                     </div>
             </div>
-            <modal-component :show="modalShow" :mode="mode" :dataList="dataList" @modalClose="changeModalShow" :currentRow="currentRow">
+            <modal-component :show="modalShow" :mode="mode" :dataList="dataList" @modalClose="changeModalShow" :currentRow="currentRow" @sentEditData="getEditData">
             </modal-component>
       </div>
 
@@ -32,6 +32,7 @@ import modalComponent  from './modalcomponent.vue'
                 modalShow:false,
                 mode:0,  //1表新建项目，2代表修改项目
                 currentRow:{},
+                listIndex:0,
                 col:[
                     {
                         title:'项目名称',
@@ -116,9 +117,20 @@ import modalComponent  from './modalcomponent.vue'
                 this.mode =2;
 
             },
-            getCurrentRow(currentRow){
+            getCurrentRow(currentRow,index){
                 this.currentRow = currentRow;
+                this.listIndex = index;
+                console.log(this.listIndex);
                 console.log(this.currentRow);
+            },
+            getEditData(name,type,days)
+            {
+                console.log("修改后的:");
+                var item = this.dataList[this.listIndex];
+                item.name = name;
+                item.type = type;
+                item.days = days;
+                console.log(item);
             }
         }
     }

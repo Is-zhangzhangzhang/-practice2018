@@ -12,7 +12,7 @@
                         </Select>
                  </FormItem>
                  <FormItem label="已进行天数:">
-                    <Input v-model="modalData.day" placeholder="请输入天数">{{modalData.day}}</Input>
+                    <Input v-model="modalData.days" placeholder="请输入天数">{{modalData.days}}</Input>
                 </FormItem>
         </Form>
     </Modal>
@@ -64,15 +64,23 @@
                     if(this.modalData.name.length == 0)
                     {
                     	alert("项目名称不能为空");
-                    	this.emitClose();
                     }
                     else
                     {
-                    	this.dataList.push(this.modalData);
-                    	console.log(this.modalData);
-                    	this.emitClose();
+                    	if(this.mode == 1)    //创建项目
+                    	{ 
+                    		this.dataList.push(this.modalData);
+	                    	console.log(this.modalData);
+	                    	this.emitClose();
+                    	}
+                    	else if(this.mode == 2)    //修改项目
+                    	{
+                    		console.log("提交修改前");
+                    		console.log(this.modalData);
+                    		this.$emit('sentEditData',this.modalData.name,this.modalData.type,this.modalData.days);
+                    	}
                     }
-                   
+                   this.emitClose();
                     //console.log(this.show);
                 },
                 cancel(){
@@ -85,8 +93,7 @@
                 		this.modalData.days = this.currentRow.days;
                 		this.modalData.type = this.currentRow.type;
                 	}
-                }
-            }
+                }            }
         }
 
 </script>
