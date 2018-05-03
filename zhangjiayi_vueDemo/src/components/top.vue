@@ -1,7 +1,7 @@
 <template>
 <div id="header-wrap">
     <div>
-        <h1>Training</h1>
+        <h1>Demo</h1>
         <a href="#">{{topLogin}}</a>
     </div>
 

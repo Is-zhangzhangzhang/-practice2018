@@ -3,7 +3,7 @@
             <top></top>
             <div class="main-wrap-container">
                     <div class="main-search">
-                        <Input v-model="search" icon="ios-search" size="large" placeholder="搜索……"></Input>
+                        <Input v-model="search" icon="ios-search" size="large" placeholder="搜索……">{{search}}</Input>
                     </div>
                     <!-- 主界面表格 -->
                     <div class="main-table">
@@ -32,7 +32,13 @@ import modalComponent  from './modalcomponent.vue'
                 modalShow:false,
                 mode:0,  //1表新建项目，2代表修改项目
                 currentRow:{},
+                currentName:'',
                 listIndex:0,
+                item: {
+                        name:'',
+                        type:'',
+                        days:'',
+                },
                 col:[
                     {
                         title:'项目名称',
@@ -61,7 +67,7 @@ import modalComponent  from './modalcomponent.vue'
                                             click: () =>
                                             {
                                                 this.modalShow=true;
-                                                this.mdfProject();
+                                                this.mdfProject(param.row.name);
                                             }
                                         }
                                 },'编辑'),
@@ -74,7 +80,7 @@ import modalComponent  from './modalcomponent.vue'
                                     },
                                     on:{
                                         click: () =>{
-                                          this.deleteItem()
+                                         this.deleteItem(param.index)
                                         }
                                     }
                                 },'删除')
@@ -84,12 +90,12 @@ import modalComponent  from './modalcomponent.vue'
                 ],
                 dataList:[
                     {
-                        name:'项目一',
+                        name:'1',
                         type:'A类型',
                         days:'0',
                     },
                     {
-                        name:'项目一',
+                        name:'2',
                         type:'A类型',
                         days:'0',
                     }
@@ -101,36 +107,38 @@ import modalComponent  from './modalcomponent.vue'
                 this.modalShow=false;
                 console.log("父组件："+this.modalShow);
             },
-            deleteItem:function(index)
-            {
-                this.dataList.splice(index,1);
-            },
             // 添加项目
             addItem:function()
-            {   
+            {
                 this.modalShow=true;
                 this.mode =1;
             },
             //  编辑项目
-            mdfProject:function(){
+            mdfProject:function(name){
                 this.modalShow=true;
                 this.mode =2;
-
+                this.currentName=name;
             },
             getCurrentRow(currentRow,index){
                 this.currentRow = currentRow;
-                this.listIndex = index;
-                console.log(this.listIndex);
-                console.log(this.currentRow);
+                console.log(index);
             },
-            getEditData(name,type,days)
+            deleteItem:function(index)
             {
-                console.log("修改后的:");
-                var item = this.dataList[this.listIndex];
-                item.name = name;
-                item.type = type;
-                item.days = days;
-                console.log(item);
+                console.log("index"+index);
+                this.dataList.splice(index,1);
+            },
+            getEditData(name,type,days)     //获得修改后的数据
+            {
+                var  i;
+                for(i=0;i<this.dataList.length;i++)
+                {
+                    if(this.dataList[i].name == this.currentName)
+                        break;
+                }
+                this.dataList[i].name =name;
+                this.dataList[i].type = type;
+                this.dataList[i].days =days;
             }
         }
     }

@@ -59,6 +59,14 @@
                     console.log(this.isShow);
                     this.$emit("modalClose",!this.isShow);
                 },
+                existProject(name){
+                    for(var i=0;i<this.dataList.length;i++)
+                    {
+                            if(name == this.dataList[i].name)
+                                return 0;
+                            else return 1;
+                    }
+                },
                 ok(){
                     //this.show = false;
                     if(this.modalData.name.length == 0)
@@ -68,10 +76,21 @@
                     else
                     {
                     	if(this.mode == 1)    //创建项目
-                    	{ 
-                    		this.dataList.push(this.modalData);
-	                    	console.log(this.modalData);
-	                    	this.emitClose();
+                    	{
+                                if( this.existProject(this.modalData.name) )
+                                {
+                                           this.dataList.push({
+                                           name:this.modalData.name,
+                                           type:this.modalData.type,
+                                           days:this.modalData.days,
+                                        });
+                                console.log(this.modalData);
+                                this.emitClose();
+                                }
+                                else {
+                                    alert("该项目名称已存在！");
+                                    this.modalData.name="";
+                                }
                     	}
                     	else if(this.mode == 2)    //修改项目
                     	{
@@ -93,7 +112,13 @@
                 		this.modalData.days = this.currentRow.days;
                 		this.modalData.type = this.currentRow.type;
                 	}
-                }            }
+                         else{
+                            this.modalData.name ="";
+                            this.modalData.days = "";
+                            this.modalData.type = "";
+                         }
+                }
+            }
         }
 
 </script>
