@@ -67,13 +67,15 @@
          },
          methods:{
             handleSubmit(data){
+                    //判断用户名密码是否正确
                     if(this.loginData.user == this.userMsg.user && this.loginData.password ==this.userMsg.password)
                     {
-                          if(this.loginData.switch == true){
+                          if(this.loginData.switch == true){   //记住密码
                               localStorage.setItem('user',JSON.stringify(this.loginData));
                           }
                           console.log("loginok");
-                          this.$router.push({path:'/main'})
+                          this.$store.commit('changeLoginStatus',this.loginData.user);
+                          this.$router.push({path:'/main'});
                     }
                     else{
                         this.$Message.error('账号或密码输入错误！');

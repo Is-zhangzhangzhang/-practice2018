@@ -2,7 +2,7 @@
 <div id="header-wrap">
     <div>
         <h1>Demo</h1>
-        <a href="#">{{topLogin}}</a>
+        <a href="#">{{loginStatus}}</a>
     </div>
 
 </div>
@@ -10,9 +10,9 @@
 <script>
     export default{
         name:'login',
-        data:function(){
-            return {
-                topLogin:'登录'
+        computed:{
+            loginStatus () {
+                return  this.$store.state.loginStatus
             }
         }
     }
