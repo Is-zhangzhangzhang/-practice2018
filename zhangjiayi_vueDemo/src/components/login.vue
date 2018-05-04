@@ -73,7 +73,7 @@
                           if(this.loginData.switch == true){   //记住密码
                               localStorage.setItem('user',JSON.stringify(this.loginData));
                           }
-                          console.log("loginok");
+                          console.log(this.loginData);
                           this.$store.commit('changeLoginStatus',this.loginData.user);
                           this.$router.push({path:'/main'});
                     }

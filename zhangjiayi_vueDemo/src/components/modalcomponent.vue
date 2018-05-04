@@ -60,6 +60,10 @@
                     this.$emit("modalClose",!this.isShow);
                 },
                 existProject(name){
+                    console.log("exit?");
+                    console.log(name);
+                    if(this.dataList.length == 0)
+                        return 1;
                     for(var i=0;i<this.dataList.length;i++)
                     {
                             if(name == this.dataList[i].name)
