@@ -95,28 +95,47 @@ import modalComponent  from './modalcomponent.vue'
                     }
                 ],
                 dataList:[
-                    {
-                        name:'1',
-                        type:'A类型',
-                        days:'0',
-                    },
-                    {
-                        name:'2',
-                        type:'A类型',
-                        days:'0',
-                    },
-                    {
-                        name:'项目1',
-                        type:'B类型',
-                        days:'0',
-                    },
-                    {
-                        name:'项目3',
-                        type:'C类型',
-                        days:'1',
-                    }
+                    // {
+                    //     name:'1',
+                    //     type:'A类型',
+                    //     days:'0',
+                    // },
+                    // {
+                    //     name:'2',
+                    //     type:'A类型',
+                    //     days:'0',
+                    // },
+                    // {
+                    //     name:'项目1',
+                    //     type:'B类型',
+                    //     days:'0',
+                    // },
+                    // {
+                    //     name:'项目3',
+                    //     type:'C类型',
+                    //     days:'1',
+                    // }
                 ]
             }
+        },
+        watch:{
+            dataList:{
+                handler:function(newval,oldval){
+                    console.log("检测datalist");
+                   // localStorage.clear();
+                    localStorage.setItem('key', JSON.stringify(this.dataList));
+                },
+                deep:true
+            }
+
+        },
+        beforeMount:function(){
+            let tableData=JSON.parse(localStorage.getItem('key'));
+             this.dataList = [];
+             this.dataList = tableData;
+            // console.log("getLocalStorage:");
+            // console.log(tableData);
+            // console.log(this.dataList);
         },
         methods:{
             keySearch(){

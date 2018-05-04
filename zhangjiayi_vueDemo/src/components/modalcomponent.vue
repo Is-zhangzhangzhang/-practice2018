@@ -67,6 +67,7 @@
                             else return 1;
                     }
                 },
+                //点击确认提交数据
                 ok(){
                     //this.show = false;
                     if(this.modalData.name.length == 0)
@@ -82,9 +83,8 @@
                                            this.dataList.push({
                                            name:this.modalData.name,
                                            type:this.modalData.type,
-                                           days:this.modalData.days,
-                                        });
-                                console.log(this.modalData);
+                                           days:this.modalData.days
+                                });
                                 this.emitClose();
                                 }
                                 else {

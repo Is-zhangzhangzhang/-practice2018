@@ -38,16 +38,46 @@
          data:function(){
             return{
                 loginData: {
+                    user:'',
+                    password:'',
+                    switch:false
+                },
+                //默认用户密码
+                userMsg:{
                     user:'admin',
-                    password:'111111',
-                    switch:true,
+                    password:'123456'
+                }
+            }
+         },
+         mounted:function(){
+             // localStorage.setItem('user',JSON.stringify(this.loginData));
+             // localStorage.removeItem('user');
+            let userstore = JSON.parse(localStorage.getItem('user'));
+            if(userstore ==null)
+            {
+                return ;
+            }
+            else
+            {
+                if(userstore.switch == true){
+                       this.loginData = userstore;
+                      console.log(this.loginData);
                 }
             }
          },
          methods:{
             handleSubmit(data){
-                    console.log("ok");
-                    this.$router.push({path:'/main'})
+                    if(this.loginData.user == this.userMsg.user && this.loginData.password ==this.userMsg.password)
+                    {
+                          if(this.loginData.switch == true){
+                              localStorage.setItem('user',JSON.stringify(this.loginData));
+                          }
+                          console.log("loginok");
+                          this.$router.push({path:'/main'})
+                    }
+                    else{
+                        this.$Message.error('账号或密码输入错误！');
+                    }
             }
         }
 }
