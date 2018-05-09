@@ -1,0 +1,142 @@
+<template>
+    <div class="layout">
+        <Layout>
+            <Header>
+                <head-menu></head-menu>
+            </Header>
+            <Layout>
+                <Sider hide-trigger :style="{background: '#fff'}" width="240">
+                    <Tabs type="card" @on-tab-remove="handleTabRemove">
+                        <TabPane label="主对象树" icon="document-text" v-if="tab2">
+                            <left-menu></left-menu>
+                        </TabPane>
+                        <TabPane label="核心对象" icon="edit" v-if="tab3">
+                            <div class="main-wel">
+                                欢迎
+                            </div>
+                        </TabPane>
+                    </Tabs>
+                </Sider>
+                <Tabs type="card" closable @on-tab-remove="handleTabRemove">
+                    <TabPane label="转换一" icon="arrow-shrink" v-if="tab1">
+                        <Layout>
+                            <Content :style="{padding: '24px', minHeight: '280px', width: '1663px'}">
+                                <index @show="showEditPage" @showLine="showEditLine"></index>
+                                <editExport v-if="edit.exportShow" @show="showEditPage" :edit="edit"></editExport>
+                                <edit-page v-if="edit.show" @show="showEditPage" :edit="edit"></edit-page>
+                                <line-edit v-if="line.show" @hiideLine="showEditLine" :line="line"></line-edit>
+                                <console-page></console-page>
+                            </Content>
+                        </Layout>
+                    </TabPane>
+                    <TabPane label="欢迎！" icon="heart" v-if="tab0">
+                        <welcome></welcome>
+                    </TabPane>
+                </Tabs>
+            </Layout>
+        </Layout>
+    </div>
+</template>
+<script>
+    import index from './ligature/Jsplumb';
+    import editPage from './ligature/EditPage';
+    import editExport from './ligature/EditExport';
+    import lineEdit from './ligature/EditLine';
+    import headMenu from './menu/HeadMenu';
+    import leftMenu from './menu/LeftMenu';
+    import welcome from './hello/Welcome';
+    import consolePage from './console/ConsolePage';
+
+    export default {
+        name: 'test1',
+        components: {
+            index,
+            editPage,
+            editExport,
+            lineEdit,
+            headMenu,
+            leftMenu,
+            welcome,
+            consolePage
+        },
+        data () {
+            return {
+                tab0: true,
+                tab1: true,
+                tab2: true,
+                tab3: true,
+                line: {
+                    show: false,
+                    source: '',
+                    target: ''
+                },
+                edit: {
+                    show: false,
+                    exportShow: false,
+                    title: ''
+                }
+            };
+        },
+        methods: {
+            showEditPage (which, data) {
+                if (typeof data === 'object'){
+                    this.edit[which] = data.show;
+                    this.edit.title = data.title;
+                } else {
+                    this.edit.show = data;
+                }
+                console.log(this.edit);
+            },
+            showEditLine (data) {
+                if (typeof data === 'object'){
+                    this.line.show = data.show;
+                    this.line.source = data.source;
+                    this.line.target = data.target;
+                } else {
+                    this.line.show = data;
+                }
+
+            },
+            handleTabRemove (name) {
+                this['tab' + name] = false;
+            }
+        }
+    };
+</script>
+
+<style lang="less">
+    .ivu-layout-header{
+        text-align: left;
+    }
+    .ivu-select-dropdown{
+          z-index: 901;
+      }
+    .ivu-tabs-bar{
+        margin-bottom: 0;
+    }
+    .main-wel{
+        font-size: 50px;
+    }
+    .layout{
+        border: 1px solid #d7dde4;
+        background: #f5f7f9;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .layout-logo{
+        width: 100px;
+        height: 30px;
+        background: #5b6270;
+        border-radius: 3px;
+        float: left;
+        position: relative;
+        top: 15px;
+        left: 20px;
+    }
+    .layout-nav{
+        width: 420px;
+        margin: 0 auto;
+        margin-right: 20px;
+    }
+</style>
