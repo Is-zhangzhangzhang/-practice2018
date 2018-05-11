@@ -98,9 +98,9 @@
                     	}
                     	else if(this.mode == 2)    //修改项目
                     	{
-                    		console.log("提交修改前");
-                    		console.log(this.modalData);
-                    		this.$emit('sentEditData',this.modalData.name,this.modalData.type,this.modalData.days);
+                                console.log("提交修改前");
+                                console.log(this.modalData);
+                                this.$emit('sentEditData',this.modalData.name,this.modalData.type,this.modalData.days);
                     	}
                     }
                    this.emitClose();
@@ -112,14 +112,14 @@
                 EditORCrete(){
                 	if(this.mode == 2)
                 	{
-                		this.modalData.name = this.currentRow.name;
-                		this.modalData.days = this.currentRow.days;
-                		this.modalData.type = this.currentRow.type;
+                                this.modalData.name = this.currentRow.name;
+                                this.modalData.days = this.currentRow.days;
+                                this.modalData.type = this.currentRow.type;
                 	}
                          else{
-                            this.modalData.name ="";
-                            this.modalData.days = "";
-                            this.modalData.type = "";
+                                this.modalData.name ="";
+                                this.modalData.days = "";
+                                this.modalData.type = "";
                          }
                 }
             }

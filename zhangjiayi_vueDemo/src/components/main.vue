@@ -64,7 +64,7 @@ import modalComponent  from './modalcomponent.vue'
                         align:'center',
                         //用render来创建html
                         render:(h,param) => {
-                            return h('div',[
+                            return h('div',[s
                                     h('Button',{
                                         props:{
                                             type:'primary',
