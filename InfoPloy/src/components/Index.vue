@@ -21,7 +21,8 @@
                     <TabPane label="转换一" icon="arrow-shrink" v-if="tab1">
                         <Layout>
                             <Content :style="{padding: '24px', minHeight: '280px', width: '1663px'}">
-                                <index @showLine="showEditLine"></index>
+                                <!--<index @showLine="showEditLine"></index> 因为在子组件中直接调用了showEditLIne所以不需要再这里再emit-->
+                                <index></index>
                                 <editExport v-if="edit.exportShow"></editExport>
                                 <edit-page v-if="edit.show"></edit-page>
                                 <line-edit v-if="line.show" @hiideLine="showEditLine" :line="line"></line-edit>
@@ -65,30 +66,15 @@
                 tab0: true,
                 tab1: true,
                 tab2: true,
-                tab3: true,
-                line: {
-                    show: false,
-                    source: '',
-                    target: ''
-                }
+                tab3: true
             };
         },
         computed: {
             ...mapState([
-                'edit'
+                'edit', 'line'
             ])
         },
         methods: {
-            showEditLine (data) {
-                if (typeof data === 'object') {
-                    this.line.show = data.show;
-                    this.line.source = data.source;
-                    this.line.target = data.target;
-                } else {
-                    this.line.show = data;
-                }
-
-            },
             handleTabRemove (name) {
                 this['tab' + name] = false;
             }

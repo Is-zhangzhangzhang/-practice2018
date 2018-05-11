@@ -8,24 +8,24 @@
             <div class="contain">
                 <Form :label-width="100">
                     <FormItem label="起始步骤:">
-                        <Select style="width:200px" :value="pointList.source"  v-model="source">
-                            <Option  :value="pointList.source" :key="pointList.source">{{ pointList.source }}</Option>
-                            <Option  :value="pointList.target" :key="pointList.target">{{ pointList.target }}</Option>
+                        <Select style="width:200px" :value="pointList.source" v-model="source">
+                            <Option :value="pointList.source" :key="pointList.source">{{ pointList.source }}</Option>
+                            <Option :value="pointList.target" :key="pointList.target">{{ pointList.target }}</Option>
                         </Select>
                     </FormItem>
                     <FormItem label="目标步骤:">
-                        <Select style="width:200px" :value="pointList.target"  v-model="target">
-                            <Option  :value="pointList.source" :key="pointList.source">{{ pointList.source }}</Option>
-                            <Option  :value="pointList.target" :key="pointList.target">{{ pointList.target }}</Option>
+                        <Select style="width:200px" :value="pointList.target" v-model="target">
+                            <Option :value="pointList.source" :key="pointList.source">{{ pointList.source }}</Option>
+                            <Option :value="pointList.target" :key="pointList.target">{{ pointList.target }}</Option>
                         </Select>
                     </FormItem>
                     <FormItem label="使连接生效？">
                         <Checkbox v-model="single"></Checkbox>
-                        <Button type="ghost" @click.prevent="changeLimit" style="float: right">From  To</Button>
+                        <Button type="ghost" @click.prevent="changeLimit" style="float: right">From To</Button>
                     </FormItem>
                 </Form>
             </div>
-            <div slot="footer" >
+            <div slot="footer">
                 <Button type="primary" size="small" @click="ok">确定</Button>
                 <Button type="ghost" size="small" @click="cancel">取消</Button>
             </div>
@@ -34,10 +34,15 @@
 </template>
 
 <script>
+    import { mapMutations } from 'vuex';
     export default {
         name: 'editLine',
-        props: ['line'],
-        data () {
+        computed: {
+            ...mapMutations([
+                'showEditLine'
+            ])
+        },
+        data() {
             return {
                 modal: false,
                 pointList: {
@@ -50,27 +55,27 @@
             };
         },
         methods: {
-            ok () {
-                this.$emit('hiideLine', false);
+            ok() {
+                this.showEditLine(false);
             },
-            cancel () {
-                this.$emit('hiideLine', false);
+            cancel() {
+                this.showEditLine( false);
             },
-            changeLimit () {
+            changeLimit() {
                 let tem = this.source;
                 this.source = this.target;
                 this.target = tem;
             }
         },
-        mounted () {
+        mounted() {
             this.modal = this.line.show;
             this.source = this.pointList.source = this.line.source;
             this.target = this.pointList.target = this.line.target;
         },
         watch: {
-            modal (val, oldval) {
-                if (oldval && !val){
-                    this.$emit('hiideLine', false);
+            modal(val, oldval) {
+                if (oldval && !val) {
+                    this.showEditLine(false);
                 }
             }
         }
@@ -78,14 +83,16 @@
 </script>
 
 <style>
-    .demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab{
+    .demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
         border-radius: 0;
         background: #fff;
     }
-    .demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active{
+
+    .demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
         border-top: 1px solid #3399ff;
     }
-    .demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active:before{
+
+    .demo-tabs-style2 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active:before {
         content: '';
         display: block;
         width: 100%;
@@ -95,12 +102,14 @@
         top: 0;
         left: 0;
     }
-    .vertical-center-modal{
+
+    .vertical-center-modal {
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    .vertical-center-modal .ivu-modal{
+
+    .vertical-center-modal .ivu-modal {
         top: 0;
     }
 </style>

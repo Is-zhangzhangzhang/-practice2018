@@ -16,6 +16,8 @@
     import '../../assets/css/demo.css';
     import '../../assets/css/jsplumb.css';
     import convertProperties from './../console/Configuration';
+    import { mapMutations } from 'vuex';
+
     let instance;
     export default {
         name: 'Index',
@@ -81,6 +83,11 @@
                 },
                 changeShow: false
             };
+        },
+        computed: {
+            ...mapMutations([
+                'show', 'showEditLine'
+            ])
         },
         methods: {
             createFlow () {
@@ -165,9 +172,9 @@
                     $('#' + uid).dblclick(function () {
                         console.log(nodeName);
                         if (nodeName === '表输出'){
-                            self.$store.commit('show', {exportShow: 'exportShow', show: true, title: nodeName });
+                            self.show('show', {exportShow: 'exportShow', show: true, title: nodeName });
                         } else {
-                            self.$store.commit('show', {exportShow: 'show', show: true, title: nodeName });
+                            self.show('show', {exportShow: 'show', show: true, title: nodeName });
                         }
 
                     });
@@ -200,7 +207,7 @@
 
                     // 线的点击
                     instance.bind('click', function (component) {
-                        self.$emit('showLine', {
+                        self.showEditLine({
                             show: true,
                             source: component.source.innerText,
                             target: component.target.innerText
