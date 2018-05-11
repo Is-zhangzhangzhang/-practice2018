@@ -106,9 +106,11 @@
     import sqlQuery from '../table_input/GetSQLQuery';
     import newModal from './../modal/New';
     import wizardModal from './../modal/Info';
+    import { mapMutations } from 'vuex';
+    import { mapState } from 'vuex';
     export default {
         name: 'editPage',
-        props: ['edit'],
+        // props: ['edit'],
         components: {
             editDatabase,
             sqlQuery,
@@ -243,16 +245,20 @@
                     '2018/04/26 11:41:43 - C:\\Users\\Huaxiang\\Desktop\\test.ktr : test - 为了转换解除补丁开始  [C:\\Users\\Huaxiang\\Desktop\\test.ktr : test]<br/>'
             };
         },
+        computed: {
+            ...mapState(['edit'])
+        },
         methods: {
+            ...mapMutations(['show']),
             help () {
                 this.helpMsg = true;
                 // this.$emit('show', false);
             },
             ok () {
-                this.$emit('show', false);
+                this.show(false);
             },
             cancel () {
-                this.$emit('show', false);
+                this.show(false);
             },
             review () {
                 this.isReview = true;
@@ -309,7 +315,7 @@
         watch: {
             modal (val, oldval) {
                 if (oldval && !val){
-                    this.$emit('show', false);
+                    this.show(false);
                 }
             }
         }

@@ -165,9 +165,9 @@
                     $('#' + uid).dblclick(function () {
                         console.log(nodeName);
                         if (nodeName === '表输出'){
-                            self.$emit('show', 'exportShow', { show: true, title: nodeName });
+                            self.$store.commit('show', {exportShow: 'exportShow', show: true, title: nodeName });
                         } else {
-                            self.$emit('show', 'show', { show: true, title: nodeName });
+                            self.$store.commit('show', {exportShow: 'show', show: true, title: nodeName });
                         }
 
                     });

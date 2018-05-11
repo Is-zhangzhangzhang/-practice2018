@@ -21,9 +21,9 @@
                     <TabPane label="转换一" icon="arrow-shrink" v-if="tab1">
                         <Layout>
                             <Content :style="{padding: '24px', minHeight: '280px', width: '1663px'}">
-                                <index @show="showEditPage" @showLine="showEditLine"></index>
-                                <editExport v-if="edit.exportShow" @show="showEditPage" :edit="edit"></editExport>
-                                <edit-page v-if="edit.show" @show="showEditPage" :edit="edit"></edit-page>
+                                <index @showLine="showEditLine"></index>
+                                <editExport v-if="edit.exportShow"></editExport>
+                                <edit-page v-if="edit.show"></edit-page>
                                 <line-edit v-if="line.show" @hiideLine="showEditLine" :line="line"></line-edit>
                                 <console-page></console-page>
                             </Content>
@@ -46,6 +46,7 @@
     import leftMenu from './menu/LeftMenu';
     import welcome from './hello/Welcome';
     import consolePage from './console/ConsolePage';
+    import {mapState} from 'vuex';
 
     export default {
         name: 'test1',
@@ -59,7 +60,7 @@
             welcome,
             consolePage
         },
-        data () {
+        data (){
             return {
                 tab0: true,
                 tab1: true,
@@ -69,26 +70,17 @@
                     show: false,
                     source: '',
                     target: ''
-                },
-                edit: {
-                    show: false,
-                    exportShow: false,
-                    title: ''
                 }
             };
         },
+        computed: {
+            ...mapState([
+                'edit'
+            ])
+        },
         methods: {
-            showEditPage (which, data) {
-                if (typeof data === 'object'){
-                    this.edit[which] = data.show;
-                    this.edit.title = data.title;
-                } else {
-                    this.edit.show = data;
-                }
-                console.log(this.edit);
-            },
             showEditLine (data) {
-                if (typeof data === 'object'){
+                if (typeof data === 'object') {
                     this.line.show = data.show;
                     this.line.source = data.source;
                     this.line.target = data.target;
@@ -105,26 +97,31 @@
 </script>
 
 <style lang="less">
-    .ivu-layout-header{
+    .ivu-layout-header {
         text-align: left;
     }
-    .ivu-select-dropdown{
-          z-index: 901;
-      }
-    .ivu-tabs-bar{
+
+    .ivu-select-dropdown {
+        z-index: 901;
+    }
+
+    .ivu-tabs-bar {
         margin-bottom: 0;
     }
-    .main-wel{
+
+    .main-wel {
         font-size: 50px;
     }
-    .layout{
+
+    .layout {
         border: 1px solid #d7dde4;
         background: #f5f7f9;
         position: relative;
         border-radius: 4px;
         overflow: hidden;
     }
-    .layout-logo{
+
+    .layout-logo {
         width: 100px;
         height: 30px;
         background: #5b6270;
@@ -134,7 +131,8 @@
         top: 15px;
         left: 20px;
     }
-    .layout-nav{
+
+    .layout-nav {
         width: 420px;
         margin: 0 auto;
         margin-right: 20px;

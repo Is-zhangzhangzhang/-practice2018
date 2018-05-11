@@ -24,5 +24,6 @@
         height: 100%;
         border-top: 10px solid #5e6a9e;
         width: 1663px;
+        *width:100%;
     }
 </style>

@@ -150,9 +150,10 @@
 <script>
     import newModal from './../modal/New';
     import wizardModal from './../modal/Info';
+    import { mapState } from 'vuex';
+    import { mapMutations } from 'vuex';
     export default {
         name: 'editPage',
-        props: ['edit'],
         components: {
             newModal,
             wizardModal
@@ -240,15 +241,23 @@
                 ]
             };
         },
+        computed: {
+            ...mapState([
+                'edit'
+            ])
+        },
         methods: {
+            ...mapMutations([
+                'show'
+            ]),
             ok () {
-                this.$emit('show', 'exportShow', { show: false});
+                this.show({ exportShow: 'exportShow', show: false});
             },
             cancel () {
-                this.$emit('show', 'exportShow', { show: false});
+                this.show({ exportShow: 'exportShow', show: false});
             },
             review () {
-                this.$emit('show', 'exportShow', { show: false});
+                this.show({ exportShow: 'exportShow', show: false});
             },
             getFilePath () {
                 this.formItem.filePath = this.$refs.input.value;
@@ -279,7 +288,7 @@
         watch: {
             modal (val, oldval) {
                 if (oldval && !val){
-                    this.$emit('show', 'exportShow', { show: false});
+                    this.show({ tpye: 'exportShow', show: false});
                 }
             }
         }
