@@ -21,11 +21,10 @@
                     <TabPane label="转换一" icon="arrow-shrink" v-if="tab1">
                         <Layout>
                             <Content :style="{padding: '24px', minHeight: '280px', width: '1663px'}">
-                                <!--<index @showLine="showEditLine"></index> 因为在子组件中直接调用了showEditLIne所以不需要再这里再emit-->
                                 <index></index>
                                 <editExport v-if="edit.exportShow"></editExport>
                                 <edit-page v-if="edit.show"></edit-page>
-                                <line-edit v-if="line.show" @hiideLine="showEditLine" :line="line"></line-edit>
+                                <line-edit v-if="line.show"></line-edit>
                                 <console-page></console-page>
                             </Content>
                         </Layout>
@@ -48,6 +47,7 @@
     import welcome from './hello/Welcome';
     import consolePage from './console/ConsolePage';
     import {mapState} from 'vuex';
+    import {mapMutations} from 'vuex';
 
     export default {
         name: 'test1',
@@ -75,6 +75,9 @@
             ])
         },
         methods: {
+            ...mapMutations([
+                'showEditLine'
+            ]),
             handleTabRemove (name) {
                 this['tab' + name] = false;
             }

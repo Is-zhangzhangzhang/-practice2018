@@ -144,8 +144,9 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex';
+    import {mapMutations} from 'vuex';
     export default {
-        props: ['transForm'],
         data () {
             return {
                 modal: false,
@@ -219,12 +220,20 @@
                 ]
             };
         },
+        computed: {
+            ...mapState([
+                'changeShow'
+            ])
+        },
         methods: {
+            ...mapMutations([
+                'okCallbackTransform'
+            ]),
             ok () {
-                this.$emit('okCallbackT', false);
+                this.okCallbackTransform(false);
             },
             cancel () {
-                this.$emit('cancelCallbackT', false);
+                this.okCallbackTransform(false);
             },
             getFilePath () {
                 this.formItem.filePath = this.$refs.input.value;
@@ -249,12 +258,12 @@
             }
         },
         mounted () {
-            this.modal = this.transForm;
+            this.modal = this.changeShow;
         },
         watch: {
             modal (val, oldval) {
                 if (oldval && !val){
-                    this.$emit('okCallbackT', false);
+                    this.okCallbackTransform(false);
                 }
             }
         }

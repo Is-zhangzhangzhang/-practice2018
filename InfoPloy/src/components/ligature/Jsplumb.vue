@@ -6,7 +6,7 @@
                               @newData="newData">
             </vue-context-menu>
         </div>
-        <convert-properties v-if="changeShow" @okCallbackT="okCallbackTransform" @cancelCallbackT="cancelCallbackTransform" :transForm="changeShow"></convert-properties>
+        <convert-properties v-if="changeShow"></convert-properties>
     </div>
 </template>
 
@@ -16,8 +16,8 @@
     import '../../assets/css/demo.css';
     import '../../assets/css/jsplumb.css';
     import convertProperties from './../console/Configuration';
-    import { mapMutations } from 'vuex';
-
+    import {mapMutations} from 'vuex';
+    import {mapState} from 'vuex';
     let instance;
     export default {
         name: 'Index',
@@ -80,16 +80,20 @@
                             btnName: '转换设置'
                         }
                     ]
-                },
-                changeShow: false
+                }
             };
         },
         computed: {
-            ...mapMutations([
-                'show', 'showEditLine'
+            ...mapState([
+                'changeShow'
             ])
         },
         methods: {
+            ...mapMutations([
+                'showEditLine',
+                'show',
+                'okCallbackTransform'
+            ]),
             createFlow () {
                 const color = '#acd';
                 instance = jsPlumb.getInstance({
@@ -129,17 +133,19 @@
             saveData () {
                 alert(1);
             },
-            newData () {
-                this.changeShow = true;
-            },
-            okCallbackTransform (value) {
-                this.changeShow = value;
-                console.log(value);
-            },
-            cancelCallbackTransform (value) {
-                this.changeShow = value;
-                console.log(value);
+            newData: function () {
+                this.okCallbackTransform(true);
             }
+            /*
+             *   okCallbackTransform (value) {
+             * this.changeShow = value;
+             * console.log(value);
+             * },
+             * cancelCallbackTransform (value) {
+             * this.changeShow = value;
+             * console.log(value);
+             *}
+             */
         },
         mounted () {
             jsPlumb.ready(() => {
@@ -172,9 +178,9 @@
                     $('#' + uid).dblclick(function () {
                         console.log(nodeName);
                         if (nodeName === '表输出'){
-                            self.show('show', {exportShow: 'exportShow', show: true, title: nodeName });
+                            self.show({exportShow: 'exportShow', show: true, title: nodeName });
                         } else {
-                            self.show('show', {exportShow: 'show', show: true, title: nodeName });
+                            self.show({exportShow: 'show', show: true, title: nodeName });
                         }
 
                     });
