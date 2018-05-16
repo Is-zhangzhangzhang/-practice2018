@@ -9,6 +9,9 @@
     </div>
 </template>
 <script>
+    import {mapState} from 'vuex';
+    import {mapMutations} from 'vuex';
+
     export default {
         data () {
             return {
@@ -46,22 +49,27 @@
                 logType: '基本日志'
             };
         },
-        props: [
-            'setting'
-        ],
+        computed: {
+            ...mapState([
+                'isSetting'
+            ])
+        },
         methods: {
+            ...mapMutations([
+                'okCallbackExecute'
+            ]),
             ok () {
-                this.$emit('okCallback', false);
+                this.okCallbackExecute(false);
                 this.$Message.info('Clicked ok');
             },
             cancel () {
-                this.$emit('cancelCallback', false);
+                this.okCallbackExecute(false);
                 this.$Message.info('Clicked cancel');
             }
         },
         mounted () {
-            this.modal = this.setting;
-            console.log(this.setting);
+            this.modal = this.isSetting;
+            console.log(this.isSetting);
         }
     };
 </script>

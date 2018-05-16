@@ -15,9 +15,9 @@
                     <Select v-model="model1" style="width:295px">
                         <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                     </Select>
-                    <Button @click="newModal = true">编辑...</Button>
-                    <Button @click="newModal = true">新建...</Button>
-                    <Button @click="wizardModal = true">Wizard...</Button>
+                    <Button @click="newModalShow(true)">编辑...</Button>
+                    <Button @click="newModalShow(true)">新建...</Button>
+                    <Button @click="wizardModalShow(true)">Wizard...</Button>
                 </div>
                 <div class="item">
                     <span>目标模式</span>
@@ -142,8 +142,9 @@
                 <Button type="ghost" size="small" @click="cancel">取消</Button>
             </div>
         </Modal>
-        <newModal v-if="newModal" :newModal="newModal"></newModal>
-        <wizardModal  v-if="wizardModal" :wizardModal="wizardModal"></wizardModal>
+        <!--<newModal v-if="newModal" :newModal="newModal"></newModal>-->
+        <newModal v-if="newModal"></newModal>
+        <wizardModal  v-if="wizardModal"></wizardModal>
     </div>
 </template>
 
@@ -161,8 +162,6 @@
         data () {
             return {
                 modal: false,
-                newModal: false,
-                wizardModal: false,
                 editData: {
                     name: ''
                 },
@@ -243,12 +242,16 @@
         },
         computed: {
             ...mapState([
-                'edit'
+                'edit',
+                'newModal',
+                'wizardModal'
             ])
         },
         methods: {
             ...mapMutations([
-                'show'
+                'show',
+                'newModalShow',
+                'wizardModalShow'
             ]),
             ok () {
                 this.show({ exportShow: 'exportShow', show: false});
@@ -288,7 +291,7 @@
         watch: {
             modal (val, oldval) {
                 if (oldval && !val){
-                    this.show({ tpye: 'exportShow', show: false});
+                    this.show({ exportShow: 'exportShow', show: false});
                 }
             }
         }

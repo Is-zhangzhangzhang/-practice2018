@@ -88,14 +88,17 @@
                 </Tabs>
             </i-col>
         </Row>
-        <setting-log v-if="isSetting" @okCallback="okCallbackExecute" @cancelCallback="cancelCallbackExecute" :setting="isSetting"></setting-log>
-        <convert-properties v-if="isTransform" @okCallbackT="okCallbackTransform" @cancelCallbackT="cancelCallbackTransform" :transForm="isTransform"></convert-properties>
+        <setting-log v-if="isSetting"></setting-log>
+        <convert-properties v-if="isTransform"></convert-properties>
     </div>
 </template>
 
 <script>
     import settingLog from './SettingLog';
     import convertProperties from './Configuration';
+    import {mapState} from 'vuex';
+    import {mapMutations} from 'vuex';
+
     export default {
         components: {
             settingLog,
@@ -103,7 +106,6 @@
         },
         data: function () {
             return {
-                isSetting: false,
                 isTransform: false,
                 group: 'one',
                 message: '2018/04/24 09:57:44 - Carte - Installing timer to purge stale objects after 1440 minutes.<br/>' +
@@ -483,33 +485,32 @@
                 ]
             };
         },
+        computed: {
+            ...mapState([
+                'isSetting',
+                'changeShow'
+            ])
+        },
+        mounted: function () {
+            this.isTransform = this.changeShow;
+        },
         methods: {
+            ...mapMutations([
+                'setLogSetting',
+                'okCallbackTransform'
+            ]),
             deleteLog () {
                 this.message = '';
             },
             setLog () {
-                this.isSetting = true;
+                // this.isSetting = true;
                 console.log('日志设置');
-            },
-            okCallbackExecute (value) {
-                this.isSetting = value;
-                console.log(value);
-            },
-            cancelCallbackExecute (value) {
-                this.isSetting = value;
-                console.log(value);
+                this.setLogSetting(true);
             },
             setTransform () {
-                this.isTransform = true;
+                // this.isTransform = true;
+                this.okCallbackTransform(true);
                 console.log('转换属性');
-            },
-            okCallbackTransform (value) {
-                this.isTransform = value;
-                console.log(value);
-            },
-            cancelCallbackTransform (value) {
-                this.isTransform = value;
-                console.log(value);
             }
         }
     };
