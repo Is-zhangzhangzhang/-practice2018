@@ -28,11 +28,6 @@ const mutations = {
             state.line.show = data;
         }
     },
-    /*  转换属性模态框 */
-    okCallbackTransform (state, value) {
-        state.changeShow = value;
-        console.log(value);
-    }
     //  转换属性模态框
     okCallbackTransform (state, value) {
         state.changeShow = value;
