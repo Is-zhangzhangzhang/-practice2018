@@ -206,9 +206,16 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex';
+    import {mapMutations} from 'vuex';
     export default {
         name: 'editPage',
-        props: ['newModal'],
+        // props: ['newModal'],
+        computed: {
+            ...mapState([
+                'newModal'
+            ])
+        },
         data () {
             return {
                 modal: false,
@@ -297,14 +304,21 @@
             };
         },
         methods: {
+            ...mapMutations([
+                'show',
+                'newModalShow'
+            ]),
             ok () {
-                this.$emit('show', 'exportShow', { show: false});
+                // this.show({ exportShow: 'exportShow', show: false});
+                this.newModalShow(false);
             },
             cancel () {
-                this.$emit('show', 'exportShow', { show: false});
+                // this.$emit('show', 'exportShow', { show: false});
+                this.newModalShow(false);
             },
             review () {
-                this.$emit('show', 'exportShow', { show: false});
+                // this.$emit('show', 'exportShow', { show: false});
+                this.newModalShow(false);
             },
             getFilePath () {
                 this.formItem.filePath = this.$refs.input.value;
@@ -359,7 +373,8 @@
         watch: {
             modal (val, oldval) {
                 if (oldval && !val){
-                    this.$emit('show', 'exportShow', { show: false});
+                    // this.$emit('show', 'exportShow', { show: false});
+                    this.newModalShow(false);
                 }
             }
         }

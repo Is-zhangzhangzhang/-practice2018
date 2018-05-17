@@ -1,41 +1,42 @@
 <template>
-    <Modal v-model="model" class-name="vertical-center-modal" width="1000px" height="800px">
-        <div class="layout">
-            <Layout>
-                <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
-                    <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
-                        <menu-item name="1-1">
-                            <span>一般</span>
-                        </menu-item>
-                        <menu-item name="1-2">
-                            <span>高级</span>
-                        </menu-item>
-                        <menu-item name="1-3">
-                            <span>选项</span>
-                        </menu-item>
-                        <menu-item name="1-4">
-                            <span>连接池</span>
-                        </menu-item>
-                        <menu-item name="1-5">
-                            <span>集群</span>
-                        </menu-item>
-                    </Menu>
-                </Sider>
+    <div>
+        <Modal v-model="model" class-name="vertical-center-modal" width="1000px" height="800px" @on-ok="ok" @on-cancel="cancel">
+            <div class="layout">
                 <Layout>
-                    <Content :style="{margin: '20px', background: '#fff', minHeight: '600px'}">
-                        <div style="background-color: #348CCC;min-height: 600px;display: inline-block;width: 48%"></div>
-                        <div style="background-color: red;min-height: 600px;display: inline-block;width:48%"></div>
-                    </Content>
+                    <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+                        <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
+                            <menu-item name="1-1">
+                                <span>一般</span>
+                            </menu-item>
+                            <menu-item name="1-2">
+                                <span>高级</span>
+                            </menu-item>
+                            <menu-item name="1-3">
+                                <span>选项</span>
+                            </menu-item>
+                            <menu-item name="1-4">
+                                <span>连接池</span>
+                            </menu-item>
+                            <menu-item name="1-5">
+                                <span>集群</span>
+                            </menu-item>
+                        </Menu>
+                    </Sider>
+                    <Layout>
+                        <Content :style="{margin: '20px', background: '#fff', minHeight: '600px'}">
+                            <div style="background-color: #348CCC;min-height: 600px;display: inline-block;width: 48%"></div>
+                            <div style="background-color: red;min-height: 600px;display: inline-block;width:48%"></div>
+                        </Content>
+                    </Layout>
                 </Layout>
-            </Layout>
-        </div>
-    </Modal>
+            </div>
+        </Modal>
+    </div>
 </template>
 <script>
+    import {mapMutations} from 'vuex';
+    import {mapState} from 'vuex';
     export default {
-        props: [
-            'editDatabase'
-        ],
         data () {
             return {
                 isCollapsed: false,
@@ -54,18 +55,24 @@
                     'menu-item',
                     this.isCollapsed ? 'collapsed-menu' : ''
                 ];
-            }
+            },
+            ...mapState([
+                'editDatabase'
+            ])
         },
         methods: {
+            ...mapMutations([
+                'editDataBaseCallbackExecute'
+            ]),
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
             },
             ok () {
-                this.$emit('okCallback', false);
+                this.editDataBaseCallbackExecute(false);
                 this.$Message.info('Clicked ok');
             },
             cancel () {
-                this.$emit('cancelCallback', false);
+                this.editDataBaseCallbackExecute(false);
                 this.$Message.info('Clicked cancel');
             }
         },

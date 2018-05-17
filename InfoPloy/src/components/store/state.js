@@ -4,11 +4,17 @@ const state = {
         exportShow: false,
         title: ''
     },
+    newModal: false,
+    wizardModal: false,
+    editDatabase: false,
+    isGetsql: false,
+    isReview: false,
     line: {
         show: false,
         source: '',
         target: ''
     },
+    isSetting: false,
     changeShow: false
 };
 
