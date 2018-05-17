@@ -54,7 +54,7 @@
             <div slot="footer" >
                 <Button type="primary" icon="help" size="small" @click="help">Help</Button>
                 <Button type="primary" size="small" @click="ok">确定(O)</Button>
-                <Button primary="error" size="small" @click="reviewShow(true)">预览(P)</Button>
+                <Button primary="error" size="small" @click="isReview = true">预览(P)</Button>
                 <Button type="ghost" size="small" @click="cancel">取消(C)</Button>
             </div>
         </Modal>
@@ -119,6 +119,7 @@
         data () {
             return {
                 number: 1000,
+                isReview: false,
                 isReviewData: false,
                 isReviewLog: false,
                 helpMsg: false,
@@ -245,8 +246,7 @@
                 'newModal',
                 'wizardModal',
                 'editDatabase',
-                'isGetsql',
-                'isReview'
+                'isGetsql'
             ])
         },
         methods: {
@@ -255,8 +255,7 @@
                 'newModalShow',
                 'wizardModalShow',
                 'editDataBaseCallbackExecute',
-                'sqlQueryShow',
-                'reviewShow'
+                'sqlQueryShow'
             ]),
             help () {
                 this.helpMsg = true;
@@ -269,9 +268,7 @@
                 this.show(false);
             },
             review () {
-                // this.isReview = true;
-                this.reviewShow(true);
-                this.show(false);
+                this.isReview = true;
                 // this.$emit('show', false);
             },
             editDatabaseConnect () {
@@ -289,7 +286,6 @@
             },
             cancelReview () {
                 console.log('取消没有弹框');
-                this.reviewShow(false);
                 // this.$emit('reviewShow', false);
             },
             showReviewData () {
