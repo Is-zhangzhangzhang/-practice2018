@@ -119,6 +119,7 @@
         data () {
             return {
                 number: 1000,
+                reviewModal: false,
                 isReviewData: false,
                 isReviewLog: false,
                 helpMsg: false,
@@ -310,6 +311,7 @@
         mounted () {
             this.modal = this.edit.show;
             this.editData.name = this.edit.title;
+            this.reviewModal = this.isReview;
         },
         watch: {
             modal (val, oldval) {
