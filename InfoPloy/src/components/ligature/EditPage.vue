@@ -225,7 +225,7 @@
                     }
                 ],
                 logMessage: '2018/04/26 09:41:39 - Carte - Installing timer to purge stale objects after 1440 minutes.<br/>' +
-                    '2018/04/26 09:44:12 - C:\\Users\\Huaxiang\\Desktop\\test.ktr : test - 为了转换解除补丁开始  [C:\\Users\\Huaxiang\\Desktop\\test.ktr : test]<br/>' +
+                    '2018/04/26 09:44:12 - C:\\Users\\Huaxiang\\Desktop\\test.ktr : test - 为了转换=解除补丁开始  [C:\\Users\\Huaxiang\\Desktop\\test.ktr : test]<br/>' +
                     '2018/04/26 09:44:13 - 表输入.0 - Finished reading query, closing connection.<br/>' +
                     '2018/04/26 09:44:13 - dummy.0 - 完成处理 (I=0, O=0, R=897, W=896, U=0, E=0)<br/>' +
                     '2018/04/26 09:44:13 - 表输入.0 - 完成处理 (I=1003, O=0, R=0, W=1001, U=0, E=0)<br/>' +
@@ -306,6 +306,7 @@
         mounted () {
             this.modal = this.edit.show;
             this.editData.name = this.edit.title;
+            this.reviewModal = this.isReview;
         },
         watch: {
             modal (val, oldval) {

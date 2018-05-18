@@ -66,7 +66,7 @@ const mutations = {
         state.isGetsql = value;
         console.log('store获取SQL查询语句');
     },
-    reviewShow(state, value){
+    reviewShow (state, value){
         state.isReview = value;
     }
 };

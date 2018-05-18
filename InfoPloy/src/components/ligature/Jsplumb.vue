@@ -3,7 +3,8 @@
         <div @contextmenu="showMenu" class="panel-body points demo flow_chart" id="points">
             <vue-context-menu :contextMenuData="contextMenuData"
                               @saveData="saveData"
-                              @newData="newData">
+                              @newData="newData"
+                              @deleteData="deleteData">
             </vue-context-menu>
         </div>
         <convert-properties v-if="changeShow"></convert-properties>
@@ -19,6 +20,7 @@
     import {mapMutations} from 'vuex';
     import {mapState} from 'vuex';
     let instance;
+    let conn;
     export default {
         name: 'Index',
         components: {
@@ -79,6 +81,12 @@
                             icoName: 'fa fa-home fa-fw',
                             btnName: '转换设置'
                         }
+                        ,
+                        {
+                            fnHandler: 'deleteData',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '删除作业'
+                        }
                     ]
                 }
             };
@@ -135,6 +143,12 @@
             },
             newData: function () {
                 this.okCallbackTransform(true);
+            },
+            deleteData () {
+                console.log('外面的删除！');
+                // console.log(elementId);
+                console.log(conn);
+                jsPlumb.detach(conn);
             }
             /*
              *   okCallbackTransform (value) {
@@ -210,7 +224,6 @@
                         isTarget: true,
                         dragAllowedWhenFull: true
                     });
-
                     // 线的点击
                     instance.bind('click', function (component) {
                         self.showEditLine({
@@ -218,6 +231,13 @@
                             source: component.source.innerText,
                             target: component.target.innerText
                         });
+                    });
+                    // 节点的右击
+                    $('#' + uid).contextmenu(function (con){
+                        event.preventDefault();
+                        console.log('删除看看！');
+                        conn = con;
+                        // elementId = $(this).parent();
                     });
                     instance.draggable(`${uid}`);
                 }).on('dragover', (ev) => {
