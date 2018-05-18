@@ -1,10 +1,13 @@
 <template>
     <div>
-        <div @contextmenu="showMenu" class="panel-body points demo flow_chart" id="points">
+        <div @contextmenu="blankClick" class="panel-body points demo flow_chart" id="points">
             <vue-context-menu :contextMenuData="contextMenuData"
                               @saveData="saveData"
                               @newData="newData"
                               @deleteData="deleteData">
+            </vue-context-menu>
+            <vue-context-menu :contextMenuData="blankMenuData"
+                              @newRecord="newRecord">
             </vue-context-menu>
         </div>
         <convert-properties v-if="changeShow"></convert-properties>
@@ -20,7 +23,9 @@
     import {mapMutations} from 'vuex';
     import {mapState} from 'vuex';
     let instance;
-    let conn;
+    let elementId;
+    let endPointTop;
+    let endPointBottom;
     export default {
         name: 'Index',
         components: {
@@ -88,7 +93,39 @@
                             btnName: '删除作业'
                         }
                     ]
-                }
+                },
+                blankMenuData: {
+                    menuName: 'blankDemo',
+                    axios: {
+                        x: null,
+                        y: null
+                    },
+                    menulists: [
+                        {
+                            fnHandler: 'newRecord',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '新建记录'
+                        },
+                        {
+                            fnHandler: 'selectAll',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '全选'
+                        }, {
+                            fnHandler: 'copy',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '复制'
+                        },
+                        {
+                            fnHandler: 'paste',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '粘贴'
+                        }
+                    ]
+                },
+                nodeList: [],
+                nodeData: {},
+                pointTop: '',
+                pointBottom: ''
             };
         },
         computed: {
@@ -130,6 +167,15 @@
                 });
                 jsPlumb.fire('jsPlumbDemoLoaded', instance);
             },
+            blankClick () {
+                event.preventDefault();
+                let x = event.clientX - 236;
+                let y = event.clientY - 102;
+                this.blankMenuData.axios = {
+                    x, y
+                };
+                console.log(this.blankMenuData);
+            },
             showMenu () {
                 event.preventDefault();
                 let x = event.clientX - 236;
@@ -138,28 +184,55 @@
                     x, y
                 };
             },
+            newRecord () {
+                alert('new Record');
+            },
             saveData () {
                 alert(1);
             },
-            newData: function () {
+            newData () {
                 this.okCallbackTransform(true);
             },
-            deleteData () {
+            updateEndPoint (){
+                let nodeData = { id: elementId, top: this.pointTop, bottom: this.pointBottom};
+                let flag = false;
+                let i = 0;
+                for (let i = 0; i < this.nodeList.length; i++){
+                    if (elementId === this.nodeList[i].id) {
+                        flag = false;
+                        break;
+                    } else if (i === this.nodeList.length){
+                        flag = true;
+                    }
+                }
+                if (i === 0 || flag === true){
+                    this.nodeList.push(nodeData);
+                } else {
+                    this.nodeList[i] = nodeData;
+                }
+                console.log(this.nodeList);
+            },
+            getEndPoint (id) {
+                for (let i in this.nodeList) {
+                    console.log('nodelist i');
+                    console.log(i);
+                    if (id === this.nodeList[i].id) {
+                        return this.nodeList[i];
+                    }
+                }
+                return ;
+            },
+            deleteData: function () {
                 console.log('外面的删除！');
-                // console.log(elementId);
-                console.log(conn);
-                jsPlumb.detach(conn);
+                let node = this.getEndPoint(elementId);
+                console.log(node);
+                console.log(node);
+                jsPlumb.deleteEndpoint(node.bottom);
+                jsPlumb.deleteEndpoint(node.top);
+                //  jsPlumb.deleteEndpoint( endPointBottom );
+                //  jsPlumb.deleteEndpoint( endPointTop );
+                jsPlumb.remove($('#' + elementId));
             }
-            /*
-             *   okCallbackTransform (value) {
-             * this.changeShow = value;
-             * console.log(value);
-             * },
-             * cancelCallbackTransform (value) {
-             * this.changeShow = value;
-             * console.log(value);
-             *}
-             */
         },
         mounted () {
             jsPlumb.ready(() => {
@@ -187,6 +260,8 @@
                              <mu-icon value="face" style="width: 24px;height: 24px;"/>${nodeName}
                         </div>`,
                     );
+                    console.log('look look elementid');
+                    elementId = `${uid}`;
                     $('#' + uid).css('left', mx);
                     $('#' + uid).css('top', my);
                     $('#' + uid).dblclick(function () {
@@ -198,7 +273,7 @@
                         }
 
                     });
-                    instance.addEndpoint(`${uid}`, {
+                    endPointBottom = instance.addEndpoint(`${uid}`, {
                         uuid: `${uid}-bottom`,
                         anchor: 'Bottom',
                         maxConnections: -1
@@ -214,7 +289,7 @@
                      * 第三参数表示点的样式以及连线的样式。没调用依次addEndpoint方法，元素上面就会多一个连线的节点。
                      * 关于hollowCircle里面各个参数的意义，可以查看api。
                      */
-                    instance.addEndpoint(`${uid}`, {
+                    endPointTop = instance.addEndpoint(`${uid}`, {
                         uuid: `${uid}-top`,
                         anchor: 'Top',
                         maxConnections: -1
@@ -224,6 +299,15 @@
                         isTarget: true,
                         dragAllowedWhenFull: true
                     });
+                    console.log('拖拽完执行赋值');
+                    self.pointTop = endPointTop.getUuid();
+                    self.pointBottom = endPointBottom.getUuid();
+                    console.log(elementId);
+                    self.updateEndPoint();
+                    instance.bind('connection', function (con) {
+                        console.log('监听连接');
+                        console.log(con);
+                    });
                     // 线的点击
                     instance.bind('click', function (component) {
                         self.showEditLine({
@@ -232,12 +316,15 @@
                             target: component.target.innerText
                         });
                     });
-                    // 节点的右击
-                    $('#' + uid).contextmenu(function (con){
+                    // 节点的右击  获得id，获取节点端点
+                    $('#' + uid).contextmenu(function (){
                         event.preventDefault();
+                        event.stopPropagation();
+                        self.showMenu();
                         console.log('删除看看！');
-                        conn = con;
-                        // elementId = $(this).parent();
+                        console.log(elementId);
+                        // console.log(endPointBottom.getUuid());
+                        console.log('pointId');
                     });
                     instance.draggable(`${uid}`);
                 }).on('dragover', (ev) => {
