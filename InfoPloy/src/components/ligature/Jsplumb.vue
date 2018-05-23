@@ -260,7 +260,7 @@
                         `<div id="${uid}" class="point chart_act_1 ${nodeName}">
                                 <i class="fa fa-table" style="width: 100%"></i>
                                 <mu-icon value="face" style="width: 24px;height: 24px;"/>
-                                <span class="span_node_Name">${nodeName}</span>
+                                <span>${nodeName}</span>
                          </div>`
                     );
                     $('#' + uid).css('left', mx);

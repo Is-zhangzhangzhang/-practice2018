@@ -1,0 +1,614 @@
+﻿transformation:{
+	info:{	//属性信息
+		name:'',	//转换名称
+		description:'',	//转换描述，空值为自闭合标签
+		extended_description:'',	//扩展描述，空值为自闭合标签
+		trans_version:'',	//转换版本，空值为自闭合标签
+		trans_type:'Normal',	//转换引擎类型，默认值是Normal，杂项设置中的转换引擎类型，Normal-Normal，SerialSingleThreaded-Serial Single Threaded (Experimental!)，SingleThreaded-Single Threaded (Designed for Hadoop)
+		trans_status:'',	//转换状态，非必有，入参trans_status>0时才有，0-空，1-草案，2-产品
+		directory:'/',	//目录，默认值是/
+		parameters:{
+			parameter:[	//命名参数设置，没有设置时，直接为空，非自闭合标签,转换成xml需要在里面元素外层增加parameter标签，即<parameter><name></name><default_value></default_value><description></description></parameter>
+				{
+					name:'',	//参数名，空值为自闭合标签
+					default_value:'',	//默认值，空值为自闭合标签
+					description:''	//描述，空值为自闭合标签
+				}
+			]
+		},
+		log:{	//日志设置
+			'trans-log-table':{	//转换
+				connection:'',	//日志数据库连接，空值为自闭合标签
+				schema:'',	//日志表模式，空值为自闭合标签
+				table:'',	//日志表，空值为自闭合标签
+				size_limit_lines:'',	//在内存中保存的日志行数，空值为自闭合标签
+				interval:'',	//日志记录间隔时间(秒)，空值为自闭合标签
+				timeout_days:'',	//日志记录过时时间(天)，空值为自闭合标签
+				field:[	//注:xml中没有这一层级，json中有方便记录，转成xml直接将里面元素变成field标签，即<field><id></id><enabled></enabled><name></name></field>
+					{
+						id:'ID_BATCH',	//字段id
+						enabled:'Y',	//是否启用, Y-启用，N-不启用，默认Y
+						name:'ID_BATCH'	//字段名称
+					},
+					{
+						id:'CHANNEL_ID',
+						enabled:'Y',	//默认Y
+						name:'CHANNEL_ID'
+					},
+					{
+						id:'TRANSNAME',
+						enabled:'Y',	//默认Y
+						name:'TRANSNAME'
+					},
+					{
+						id:'STATUS',
+						enabled:'Y',	//默认Y
+						name:'STATUS'
+					},
+					{
+						id:'LINES_READ',
+						enabled:'Y',	//默认Y
+						name:'LINES_READ',
+						subject:''	//Step name，默认空值，空值为自闭合标签，需是转换已配置的step name，否则添加不上
+					},
+					{
+						id:'LINES_WRITTEN',
+						enabled:'Y',	//默认Y
+						name:'LINES_WRITTEN',
+						subject:''	//Step name，默认空值，空值为自闭合标签
+					},
+					{
+						id:'LINES_UPDATED',
+						enabled:'Y',	//默认Y
+						name:'LINES_UPDATED',
+						subject:''	//Step name，默认空值，空值为自闭合标签
+					},
+					{
+						id:'LINES_INPUT',
+						enabled:'Y',	//默认Y
+						name:'LINES_INPUT',
+						subject:''	//Step name，默认空值，空值为自闭合标签
+					},
+					{
+						id:'LINES_OUTPUT',
+						enabled:'Y',	//默认Y
+						name:'LINES_OUTPUT',
+						subject:''	//Step name，默认空值，空值为自闭合标签
+					},
+					{
+						id:'LINES_REJECTED',
+						enabled:'Y',	//默认Y
+						name:'LINES_REJECTED',
+						subject:''	//Step name，默认空值，空值为自闭合标签
+					},
+					{
+						id:'ERRORS',
+						enabled:'Y',	//默认Y
+						name:'ERRORS'
+					},
+					{
+						id:'STARTDATE',
+						enabled:'Y',	//默认Y
+						name:'STARTDATE'
+					},
+					{
+						id:'ENDDATE',
+						enabled:'Y',	//默认Y
+						name:'ENDDATE'
+					},
+					{
+						id:'LOGDATE',
+						enabled:'Y',	//默认Y
+						name:'LOGDATE'
+					},
+					{
+						id:'DEPDATE',
+						enabled:'Y',	//默认Y
+						name:'DEPDATE'
+					},
+					{
+						id:'REPLAYDATE',
+						enabled:'Y',	//默认Y
+						name:'REPLAYDATE'
+					},
+					{
+						id:'LOG_FIELD',
+						enabled:'Y',	//默认Y
+						name:'LOG_FIELD'
+					},
+					{
+						id:'EXECUTING_SERVER',
+						enabled:'N',	//默认N
+						name:'EXECUTING_SERVER'
+					},
+					{
+						id:'EXECUTING_USER',
+						enabled:'N',	//默认N
+						name:'EXECUTING_USER'
+					},
+					{
+						id:'CLIENT',
+						enabled:'N',	//默认N
+						name:'CLIENT'
+					},
+				]
+			},
+			'perf-log-table':{	//运行
+				connection:'',	//日志数据库连接，空值为自闭合标签
+				schema:'',	//日志表模式，空值为自闭合标签
+				table:'',	//日志表，空值为自闭合标签
+				interval:'',	//日志记录间隔时间(秒)，空值为自闭合标签
+				timeout_days:'',	//日志记录过时时间(天)，空值为自闭合标签
+				field:[	//注:xml中没有这一层级，json中有方便记录，转成xml直接将里面元素变成field标签，即<field><id></id><enabled></enabled><name></name></field>
+					{
+						id:'ID_BATCH',	//字段id
+						enabled:'Y',	//是否启用, Y-启用，N-不启用，默认Y
+						name:'ID_BATCH'	//字段名称
+					},
+					{
+						id:'SEQ_NR',
+						enabled:'Y',	//默认Y
+						name:'SEQ_NR'
+					},
+					{
+						id:'LOGDATE',
+						enabled:'Y',	//默认Y
+						name:'LOGDATE'
+					},
+					{
+						id:'TRANSNAME',
+						enabled:'Y',	//默认Y
+						name:'TRANSNAME'
+					},
+					{
+						id:'STEPNAME',
+						enabled:'Y',	//默认Y
+						name:'STEPNAME'
+					},
+					{
+						id:'STEP_COPY',
+						enabled:'Y',	//默认Y
+						name:'STEP_COPY'
+					},
+					{
+						id:'LINES_READ',
+						enabled:'Y',	//默认Y
+						name:'LINES_READ'
+					},
+					{
+						id:'LINES_WRITTEN',
+						enabled:'Y',	//默认Y
+						name:'LINES_WRITTEN'
+					},
+					{
+						id:'LINES_UPDATED',
+						enabled:'Y',	//默认Y
+						name:'LINES_UPDATED'
+					},
+					{
+						id:'LINES_INPUT',
+						enabled:'Y',	//默认Y
+						name:'LINES_INPUT'
+					},
+					{
+						id:'LINES_OUTPUT',
+						enabled:'Y',	//默认Y
+						name:'LINES_OUTPUT'
+					},
+					{
+						id:'LINES_REJECTED',
+						enabled:'Y',	//默认Y
+						name:'LINES_REJECTED'
+					},
+					{
+						id:'ERRORS',
+						enabled:'Y',	//默认Y
+						name:'ERRORS'
+					},
+					{
+						id:'INPUT_BUFFER_ROWS',
+						enabled:'Y',	//默认Y
+						name:'INPUT_BUFFER_ROWS'
+					},
+					{
+						id:'OUTPUT_BUFFER_ROWS',
+						enabled:'Y',	//默认Y
+						name:'OUTPUT_BUFFER_ROWS'
+					}
+				]
+			},
+			'channel-log-table':{	//日志通道
+				connection:'',	//日志数据库连接，空值为自闭合标签
+				schema:'',	//日志表模式，空值为自闭合标签
+				table:'',	//日志表，空值为自闭合标签
+				timeout_days:'',	//日志记录过时时间(天)，空值为自闭合标签
+				field:[	//注:xml中没有这一层级，json中有方便记录，转成xml直接将里面元素变成field标签，即<field><id></id><enabled></enabled><name></name></field>
+					{
+						id:'ID_BATCH',	//字段id
+						enabled:'Y',	//是否启用, Y-启用，N-不启用，默认Y
+						name:'ID_BATCH'	//字段名称
+					},
+					{
+						id:'CHANNEL_ID',
+						enabled:'Y',	//默认Y
+						name:'CHANNEL_ID'
+					},
+					{
+						id:'LOG_DATE',
+						enabled:'Y',	//默认Y
+						name:'LOG_DATE'
+					},
+					{
+						id:'LOGGING_OBJECT_TYPE',
+						enabled:'Y',	//默认Y
+						name:'LOGGING_OBJECT_TYPE'
+					},
+					{
+						id:'OBJECT_NAME',
+						enabled:'Y',	//默认Y
+						name:'OBJECT_NAME'
+					},
+					{
+						id:'OBJECT_COPY',
+						enabled:'Y',	//默认Y
+						name:'OBJECT_COPY'
+					},
+					{
+						id:'REPOSITORY_DIRECTORY',
+						enabled:'Y',	//默认Y
+						name:'REPOSITORY_DIRECTORY'
+					},
+					{
+						id:'FILENAME',
+						enabled:'Y',	//默认Y
+						name:'FILENAME'
+					},
+					{
+						id:'OBJECT_ID',
+						enabled:'Y',	//默认Y
+						name:'OBJECT_ID'
+					},
+					{
+						id:'OBJECT_REVISION',
+						enabled:'Y',	//默认Y
+						name:'OBJECT_REVISION'
+					},
+					{
+						id:'PARENT_CHANNEL_ID',
+						enabled:'Y',	//默认Y
+						name:'PARENT_CHANNEL_ID'
+					},
+					{
+						id:'ROOT_CHANNEL_ID',
+						enabled:'Y',	//默认Y
+						name:'ROOT_CHANNEL_ID'
+					}
+				]
+			},
+			'step-log-table':{	//步骤
+				connection:'',	//日志数据库连接，空值为自闭合标签
+				schema:'',	//日志表模式，空值为自闭合标签
+				table:'',	//日志表，空值为自闭合标签
+				timeout_days:'',	//日志记录过时时间(天)，空值为自闭合标签
+				field:[	//注:xml中没有这一层级，json中有方便记录，转成xml直接将里面元素变成field标签，即<field><id></id><enabled></enabled><name></name></field>
+					{
+						id:'ID_BATCH',	//字段id
+						enabled:'Y',	//是否启用, Y-启用，N-不启用，默认Y
+						name:'ID_BATCH'	//字段名称
+					},
+					{
+						id:'CHANNEL_ID',
+						enabled:'Y',	//默认Y
+						name:'CHANNEL_ID'
+					},
+					{
+						id:'LOG_DATE',
+						enabled:'Y',	//默认Y
+						name:'LOG_DATE'
+					},
+					{
+						id:'TRANSNAME',
+						enabled:'Y',	//默认Y
+						name:'TRANSNAME'
+					},
+					{
+						id:'STEPNAME',
+						enabled:'Y',	//默认Y
+						name:'STEPNAME'
+					},
+					{
+						id:'STEP_COPY',
+						enabled:'Y',	//默认Y
+						name:'STEP_COPY'
+					},
+					{
+						id:'LINES_READ',
+						enabled:'Y',	//默认Y
+						name:'LINES_READ'
+					},
+					{
+						id:'LINES_WRITTEN',
+						enabled:'Y',	//默认Y
+						name:'LINES_WRITTEN'
+					},
+					{
+						id:'LINES_UPDATED',
+						enabled:'Y',	//默认Y
+						name:'LINES_UPDATED'
+					},
+					{
+						id:'LINES_INPUT',
+						enabled:'Y',	//默认Y
+						name:'LINES_INPUT'
+					},
+					{
+						id:'LINES_OUTPUT',
+						enabled:'Y',	//默认Y
+						name:'LINES_OUTPUT'
+					},
+					{
+						id:'LINES_REJECTED',
+						enabled:'Y',	//默认Y
+						name:'LINES_REJECTED'
+					},
+					{
+						id:'ERRORS',
+						enabled:'Y',	//默认Y
+						name:'ERRORS'
+					},
+					{
+						id:'LOG_FIELD',
+						enabled:'N',	//默认Y
+						name:'LOG_FIELD'
+					}
+				]
+			},
+			'metrics-log-table':{	//Metrics
+				connection:'',	//日志数据库连接，空值为自闭合标签
+				schema:'',	//日志表模式，空值为自闭合标签
+				table:'',	//日志表，空值为自闭合标签
+				timeout_days:'',	//日志记录过时时间(天)，空值为自闭合标签
+				field:[	//注:xml中没有这一层级，json中有方便记录，转成xml直接将里面元素变成field标签，即<field><id></id><enabled></enabled><name></name></field>
+					{
+						id:'ID_BATCH',	//字段id
+						enabled:'Y',	//是否启用, Y-启用，N-不启用，默认Y
+						name:'ID_BATCH'	//字段名称
+					},
+					{
+						id:'CHANNEL_ID',
+						enabled:'Y',	//默认Y
+						name:'CHANNEL_ID'
+					},
+					{
+						id:'LOG_DATE',
+						enabled:'Y',	//默认Y
+						name:'LOG_DATE'
+					},
+					{
+						id:'METRICS_DATE',
+						enabled:'Y',	//默认Y
+						name:'METRICS_DATE'
+					},
+					{
+						id:'METRICS_CODE',
+						enabled:'Y',	//默认Y
+						name:'METRICS_CODE'
+					},
+					{
+						id:'METRICS_DESCRIPTION',
+						enabled:'Y',	//默认Y
+						name:'METRICS_DESCRIPTION'
+					},
+					{
+						id:'METRICS_SUBJECT',
+						enabled:'Y',	//默认Y
+						name:'METRICS_SUBJECT'
+					},
+					{
+						id:'METRICS_TYPE',
+						enabled:'Y',	//默认Y
+						name:'METRICS_TYPE'
+					},
+					{
+						id:'METRICS_VALUE',
+						enabled:'Y',	//默认Y
+						name:'METRICS_VALUE'
+					}
+				]
+			}
+		},
+		maxdate:{	//日期设置
+			connection:'',	//最大日期数据库连接，空值为自闭合标签
+			table:'',	//最大日期表，空值为自闭合标签
+			field:'',	//最大日期字段，空值为自闭合标签
+			offset:'0.0',	//最大日期偏移(秒)，默认值是0.0
+			maxdiff:'0.0'	//最大日期区别(秒)，默认值是0.0
+		},
+		size_rowset:'10000',	//杂项设置：记录集合里的记录数，默认值是10000
+		sleep_time_empty:'',	//TODO
+		sleep_time_full:'',	//TODO
+		unique_connections:'N',	//杂项设置：使用唯一连接，Y-使用，N-不使用，默认值是N
+		feedback_shown:'Y',	//杂项设置：转换时是否在日志中记录反馈，Y-记录，N-不记录，默认值是Y
+		feedback_size:'50000',	//杂项设置：每个反馈行的处理记录数，默认值是50000
+		using_thread_priorities:'Y',	//杂项设置：管理线程优先级?，Y-启用，N-不启用，默认值是Y
+		shared_objects_file:'',	//杂项设置：共享对象文件，，空值为自闭合标签
+		capture_step_performance:'N',	//监控设置：开启步骤性能监控？，Y-启用，N-不启用，默认值是N
+		step_performance_capturing_delay:'1000',	//监控设置：步骤性能测量间隔(毫秒)，默认值是1000
+		step_performance_capturing_size_limit:'100',	//监控设置：内存中最大快照数量，默认值是100
+		dependencies:{
+			dependency:[	//依赖设置，没有设置时，直接为空，非自闭合标签,转换成xml需要在里面元素外层增加dependency标签，即<dependency><connection></connection><table></table><field></field></dependency>
+				{
+					connection:'',	//数据库连接，空值为自闭合标签
+					table:'',	//表，空值为自闭合标签
+					field:''	//Field，空值为自闭合标签
+				}
+			]
+		},
+		partitionschemas:{
+			partitionschema:[	//数据库分区schemas设置，没有设置时，直接为空，非自闭合标签,转换成xml需要在里面元素外层增加partitionschema标签，即<partitionschema><name></name>...</partitionschema>
+				{
+					name:'',	//分区schema名称
+					partition:[	//转成xml直接将里面元素变成partition标签，即<partition><id></id></partition>
+						{
+							id:''	//分区id
+						}
+					],
+					dynamic:'N',	//Dynamically create the schema，Y-启用，N-不启用，默认值是N
+					partitions_per_slave:''	//Number of partitions per slave server? ，空值为自闭合标签
+				}
+			]
+		},
+		slaveservers:{
+			slaveserver:[	//子服务器设置，没有设置时，直接为空，非自闭合标签,转换成xml需要在里面元素外层增加slaveserver标签，即<slaveserver><name></name>...</slaveserver>
+				{	
+					name:'',	//服务器名
+					hostname:'',	//主机名称或IP地址
+					port:'',	//端口号（如果不写就是端口80）
+					webAppName:'',	//Web App Name(required for Pentaho Server)
+					username:'',	//用户名
+					password:'',	//密码，需加密
+					proxy_hostname:'',	//代理服务器主机名
+					proxy_port:'',	//代理服务器端口
+					non_proxy_hosts:'',	//Ignore proxy for hosts: regexp | separated
+					master:'N',	//是主服务器吗？Y-是，N-否，默认值是N
+					sslMode:'N',	//默认值是N
+					sslConfig:{	//有设置时才出现
+						keyStore:'',
+						keyStorePassword:'',	//密码，需加密
+						keyPassword:''	//密码，需加密
+					}
+				}
+			]
+		},
+		clusterschemas:{
+			clusterschema:[	//Kettle集群schemas设置，没有设置时，直接为空，非自闭合标签,转换成xml需要在里面元素外层增加clusterschema标签，即<clusterschema><name></name>...</clusterschema>
+				{	
+					name:'',	//Schema名称
+					base_port:'40000',	//端口，默认值是40000
+					sockets_buffer_size:'2000',	//Sockets缓存大小，默认值是2000
+					sockets_flush_interval:'5000',	//Sockets刷新间隔(rows)，默认值是5000
+					sockets_compressed:'Y',	//Sockets数据是否压缩？，Y-是，N-否，默认值是Y
+					dynamic:'N',	//Dynamic cluster， Y-是，N-否，默认值是N
+					slaveservers:[	//转成xml直接将里面元素变成slaveservers标签，即<slaveservers><name></name><name></name></partition>
+						{
+							name:''	//子服务器名称
+						}
+					]
+				}
+			]
+		},
+		created_user:'',	//创建者，默认值是-
+		created_date:'',	//创建日期
+		modified_user:'',	//最近修改的用户
+		modified_date:'',	//最近修改日期
+		key_for_session_key:'',	//TODO
+		is_key_private:'N'	//TODO
+	},
+	notepads:{
+		notepad:[	//注释设置，没有设置时，直接为空，非自闭合标签,转换成xml需要在里面元素外层增加notepad标签，即<notepad><note></note>...</clusterschema>
+			{	//
+				note:'',	//注释信息
+				xloc:'',	//注释位置横坐标
+				yloc:'',	//注释位置纵坐标
+				width:'',	//宽，默认值是20
+				heigth:'',	//高，默认值是20
+				fontname:'',	//字体，默认值是Microsoft YaHei UI
+				fontsize:'9',	//字体大小，默认值是9
+				fontbold:'N',	//是否粗体，Y-是，N-否，默认值是N
+				fontitalic:'N',	//是否斜体，Y-是，N-否，默认值是N
+				fontcolorred:'0',	//字体颜色red值
+				fontcolorgreen:'0',	//字体颜色green值
+				fontcolorblue:'0',	//字体颜色blue值
+				backgroundcolorred:'255',	//背景色red值
+				backgroundcolorgreen:'205',	//背景色green值
+				backgroundcolorblue:'112',	//背景色blue值
+				bordercolorred:'100',	//边线颜色red值
+				bordercolorgreen:'100',	//边线颜色green值
+				bordercolorblue:'100',	//边线颜色blue值
+				drawshadow:'Y'	//是否显示阴影，Y-是，N-否，默认值是Y
+			}
+		]
+	},
+	****connection:[	//转成xml直接将里面元素变成connection标签，即<connection><name></name>...</connection>
+		{
+			name:'',	//数据连接名称
+			server:'',	//
+			type:'',	//数据库类型
+			access:'',	
+			database:'',	
+			port:'',	//端口
+			username:'',	//用户名
+			password:'',	//密码，需加密
+			servername:'',	
+			data_tablespace:'',
+			index_tablespace:'',
+			read_only:'',
+			attributes:[
+				{
+					code:'',
+					attribute:''
+				}
+			]
+		}
+	],
+	****order:{
+		hop:[	// 转成xml直接将里面元素变成hop标签，即<hop><from></from>...</hop>
+			{
+				from:'',	//起始步骤
+				to:'',	//目标步骤
+				enabled:'Y'	//使连接生效？，Y-生效，N-不生效，默认值是Y
+			}
+		]
+	},
+	****step:[	// 转成xml直接将里面元素变成step标签，即<step><from></from>...</step>
+		{
+			name:'',	//步骤名称
+			type:'',	//步骤类型
+			description:'',	//步骤描述
+			distribute:'',	//数据分发,Y-使用，N-不使用，默认值是Y
+			custom_distribution:'',	//
+			copies:'1'	//复制的数量
+		}
+	],
+	step_error_handling:{	//步骤错误处理
+		error:[	// 转成xml直接将里面元素变成step标签，即<error><from></from>...</error>
+			{
+				source_step:'', //错误处理步骤名
+				target_step:'',	//目标步骤
+				is_enabled:'N', //启用错误处理？，Y-启用，N-不启用，默认值是N
+				nr_valuename:'',	//错误数列名
+				descriptions_valuename:'',	//错误描述列名
+				fields_valuename:'',	//错误列的列名
+				codes_valuename:'',	//错误编码列名
+				max_errors:'',	//允许的最大错误数
+				max_pct_errors:'',	//允许的最大错误百分比
+				min_pct_rows:''	//在计算百分比前最少要读入的行数
+			}
+		]
+	},
+	'slave-step-copy-partition-distribution':{	//TODO
+		entry:[
+			{
+				slavename:'',
+				partition_schema_name:'',
+				stepcopy:'',
+				partition:''
+			}
+		],
+		'original-partition-schemas':{
+			partitionschema:[	//数据库分区schemas设置，没有设置时，直接为空，非自闭合标签,转换成xml需要在里面元素外层增加partitionschema标签，即<partitionschema><name></name>...</partitionschema>
+				{
+					name:'',	//分区schema名称
+					partition:[	//转成xml直接将里面元素变成partition标签，即<partition><id></id></partition>
+						{
+							id:''	//分区id
+						}
+					],
+					dynamic:'N',	//Dynamically create the schema，Y-启用，N-不启用，默认值是N
+					partitions_per_slave:''	//Number of partitions per slave server? ，空值为自闭合标签
+				}
+			]
+		}
+	},
+	slave_transformation:'N' //TODO
+}
