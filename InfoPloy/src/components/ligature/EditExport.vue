@@ -237,8 +237,18 @@
                         address: 'Ottawa No. 2 Lake Park',
                         date: '2016-10-04'
                     }
-                ]
-            };
+                ],
+                transformation:{
+                    info:{
+                        name:'',
+                        description:'',
+                        extended_description:'',
+                        trans_version:'',
+                        trans_type:'',
+
+                    }
+                }
+            }
         },
         computed: {
             ...mapState([

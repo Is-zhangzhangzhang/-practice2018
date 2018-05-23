@@ -24,8 +24,6 @@
     import {mapState} from 'vuex';
     let instance;
     let elementId;
-    let endPointTop;
-    let endPointBottom;
     export default {
         name: 'Index',
         components: {
@@ -233,6 +231,9 @@
                 jsPlumb.deleteEndpoint(node.bottom);
                 jsPlumb.deleteEndpoint(node.top);
                 jsPlumb.remove($('#' + elementId));
+            },
+            delLine () {
+                console.log('delete line');
             }
         },
         mounted () {
@@ -274,7 +275,7 @@
                         }
 
                     });
-                    endPointBottom = instance.addEndpoint(`${uid}`, {
+                    let endPointBottom = instance.addEndpoint(`${uid}`, {
                         uuid: `${uid}-bottom`,
                         anchor: 'Bottom',
                         maxConnections: -1
@@ -290,7 +291,7 @@
                      * 第三参数表示点的样式以及连线的样式。没调用依次addEndpoint方法，元素上面就会多一个连线的节点。
                      * 关于hollowCircle里面各个参数的意义，可以查看api。
                      */
-                    endPointTop = instance.addEndpoint(`${uid}`, {
+                    let endPointTop = instance.addEndpoint(`${uid}`, {
                         uuid: `${uid}-top`,
                         anchor: 'Top',
                         maxConnections: -1
@@ -303,12 +304,9 @@
                     console.log('拖拽完执行赋值');
                     console.log('look look elementid');
                     elementId = `${uid}`;
-                    self.pointTop = endPointTop.getUuid();
-                    self.pointBottom = endPointBottom.getUuid();
                     self.nodeData.bottom = endPointBottom;
                     self.nodeData.top = endPointTop;
                     self.nodeData.id = elementId;
-                    console.log(elementId);
                     self.updateEndPoint();
                     instance.bind('connection', function (con) {
                         console.log('监听连接');
@@ -331,6 +329,7 @@
                         event.stopPropagation();
                         console.log('检测是否使用了阻止冒泡！');
                         jsPlumb.deleteConnection(component);
+                        self.delLine();
                         return false;
                     });
                     // 节点的右击  获得id，获取节点端点
