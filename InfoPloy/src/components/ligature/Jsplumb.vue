@@ -194,7 +194,6 @@
                 this.okCallbackTransform(true);
             },
             updateEndPoint (){
-                let nodeData = { id: elementId, top: this.pointTop, bottom: this.pointBottom};
                 let flag = false;
                 let i = 0;
                 for (let i = 0; i < this.nodeList.length; i++){
@@ -206,17 +205,23 @@
                     }
                 }
                 if (i === 0 || flag === true){
-                    this.nodeList.push(nodeData);
+                    this.nodeList.push({
+                        id: this.nodeData.id,
+                        top: this.nodeData.top,
+                        bottom: this.nodeData.bottom
+                    });
                 } else {
-                    this.nodeList[i] = nodeData;
+                    this.nodeList[i] = this.nodeData;
                 }
                 console.log(this.nodeList);
             },
             getEndPoint (id) {
                 for (let i in this.nodeList) {
-                    console.log('nodelist i');
-                    console.log(i);
+                    console.log(id);
+                    console.log('nodelist[i]');
                     if (id === this.nodeList[i].id) {
+                        console.log('ID相等咿呀咿呀哟');
+                        console.log(this.nodeList[i].id);
                         return this.nodeList[i];
                     }
                 }
@@ -226,11 +231,8 @@
                 console.log('外面的删除！');
                 let node = this.getEndPoint(elementId);
                 console.log(node);
-                console.log(node);
                 jsPlumb.deleteEndpoint(node.bottom);
                 jsPlumb.deleteEndpoint(node.top);
-                //  jsPlumb.deleteEndpoint( endPointBottom );
-                //  jsPlumb.deleteEndpoint( endPointTop );
                 jsPlumb.remove($('#' + elementId));
             }
         },
@@ -260,8 +262,6 @@
                              <mu-icon value="face" style="width: 24px;height: 24px;"/>${nodeName}
                         </div>`,
                     );
-                    console.log('look look elementid');
-                    elementId = `${uid}`;
                     $('#' + uid).css('left', mx);
                     $('#' + uid).css('top', my);
                     $('#' + uid).dblclick(function () {
@@ -300,8 +300,13 @@
                         dragAllowedWhenFull: true
                     });
                     console.log('拖拽完执行赋值');
+                    console.log('look look elementid');
+                    elementId = `${uid}`;
                     self.pointTop = endPointTop.getUuid();
                     self.pointBottom = endPointBottom.getUuid();
+                    self.nodeData.bottom = endPointBottom;
+                    self.nodeData.top = endPointTop;
+                    self.nodeData.id = elementId;
                     console.log(elementId);
                     self.updateEndPoint();
                     instance.bind('connection', function (con) {
@@ -321,6 +326,7 @@
                         event.preventDefault();
                         event.stopPropagation();
                         self.showMenu();
+                        elementId = `${uid}`;
                         console.log('删除看看！');
                         console.log(elementId);
                         // console.log(endPointBottom.getUuid());
