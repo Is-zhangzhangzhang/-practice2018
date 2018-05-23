@@ -3,11 +3,11 @@
         <div @contextmenu="blankClick" class="panel-body points demo flow_chart" id="points">
             <vue-context-menu :contextMenuData="contextMenuData"
                               @saveData="saveData"
-                              @newData="newData"
                               @deleteData="deleteData">
             </vue-context-menu>
             <vue-context-menu :contextMenuData="blankMenuData"
-                              @newRecord="newRecord">
+                              @newRecord="newRecord"
+                              @newData="newData">
             </vue-context-menu>
         </div>
         <convert-properties v-if="changeShow"></convert-properties>
@@ -82,12 +82,6 @@
                             btnName: '新建注释'
                         },
                         {
-                            fnHandler: 'newData',
-                            icoName: 'fa fa-home fa-fw',
-                            btnName: '转换设置'
-                        }
-                        ,
-                        {
                             fnHandler: 'deleteData',
                             icoName: 'fa fa-home fa-fw',
                             btnName: '删除作业'
@@ -119,6 +113,11 @@
                             fnHandler: 'paste',
                             icoName: 'fa fa-home fa-fw',
                             btnName: '粘贴'
+                        },
+                        {
+                            fnHandler: 'newData',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '转换设置'
                         }
                     ]
                 },
@@ -259,8 +258,10 @@
                     const uid = new Date().getTime();
                     $('.points').append(
                         `<div id="${uid}" class="point chart_act_1 ${nodeName}">
-                             <mu-icon value="face" style="width: 24px;height: 24px;"/>${nodeName}
-                        </div>`,
+                                <i class="fa fa-table" style="width: 100%"></i>
+                                <mu-icon value="face" style="width: 24px;height: 24px;"/>
+                                <span class="span_node_Name">${nodeName}</span>
+                         </div>`
                     );
                     $('#' + uid).css('left', mx);
                     $('#' + uid).css('top', my);
@@ -321,15 +322,23 @@
                             target: component.target.innerText
                         });
                     });
+                    instance.bind('contextmenu', function (component) {
+                        console.log('删除连线！');
+                        // console.log(component);
+                        let conn = jsPlumb.select().isDetachable();
+                        console.log(conn);
+                        event.preventDefault();
+                        event.stopPropagation();
+                        console.log('检测是否使用了阻止冒泡！');
+                        jsPlumb.deleteConnection(component);
+                        return false;
+                    });
                     // 节点的右击  获得id，获取节点端点
-                    $('#' + uid).contextmenu(function (){
+                    $('#' + uid).contextmenu( function (){
                         event.preventDefault();
                         event.stopPropagation();
                         self.showMenu();
                         elementId = `${uid}`;
-                        console.log('删除看看！');
-                        console.log(elementId);
-                        // console.log(endPointBottom.getUuid());
                         console.log('pointId');
                     });
                     instance.draggable(`${uid}`);
@@ -349,5 +358,9 @@
 
     .point.chart_act_1 {
         color: #fac;
+    }
+
+    .point.chart_act_1 i{
+        font-size: 3em;
     }
 </style>

@@ -30,8 +30,8 @@ const mutations = {
     },
     //  转换属性模态框
     okCallbackTransform (state, value) {
+        console.log('转换属性！');
         state.changeShow = value;
-        console.log(value);
     },
     /*
      *cancelCallbackTransform (state, value) {
@@ -46,7 +46,6 @@ const mutations = {
     okCallbackExecute (state, value){
         console.log('进入日志设置');
         state.isSetting = value;
-        console.log(value);
     },
     //  表输出点击新建，newModal的模态框
     newModalShow (state, value){

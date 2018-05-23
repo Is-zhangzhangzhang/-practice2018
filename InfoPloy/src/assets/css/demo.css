@@ -6,8 +6,8 @@
 /** ELEMENTS **/
 .points .point {
 	border:0.1em dotted #d4e06b;
-	width:8em; height:3em;
-	line-height:2em;
+	width:4.5em; height:4em;
+	line-height:4.5em;
 }
 
 /** HOVER EFFECTS **/
