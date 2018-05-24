@@ -11,30 +11,31 @@
                         <TabPane label="转换">
                             <Form :model="formItem" :label-width="300">
                                 <FormItem label="转换名称：">
-                                    <Input v-model="formItem.regular" style="width: 300px"/>
+                                    <Input v-model="info.name" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="转换文件">
-                                    <Input v-model="formItem.unregular" style="width: 300px"/>
+                                    <Input style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="描述：">
-                                    <Input v-model="formItem.regular" style="width: 300px"/>
+                                    <Input v-model="info.description" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="扩展描述：">
-                                    <Input v-model="formItem.unregular" style="width: 300px"/>
+                                    <Input v-model="info.extendedDescription" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="状态：">
-                                    <Select v-model="formItem.select">
-                                        <Option value="草案">草案</Option>
-                                        <Option value="产品">产品</Option>
+                                    <Select v-model="info.transStatus">
+                                        <Option value="1">草案</Option>
+                                        <Option value="2">产品</Option>
+                                        <Option value="0">&nbsp;</Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="版本：">
-                                    <Input v-model="formItem.unregular" style="width: 300px"/>
+                                    <Input v-model="info.transVersion" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="目录：">
-                                    <Input v-model="formItem.filePath" style="width: 200px"/>
+                                    <Input v-model="info.directory" style="width: 200px"/>
                                     <Button><label for="review">浏览...</label></Button>
-                                    <input type="file" name="review" id="review" v-show="false" @change="getFilePath" ref="input"/>
+                                    <input type="file" name="review" id="review" v-show="false" @change="getDirectory" ref="input"/>
                                 </FormItem>
                                 <FormItem label="创建者">
                                     <Input v-model="formItem.creator" style="width: 300px"/>
@@ -52,10 +53,12 @@
                         </TabPane>
                         <TabPane label="命名参数">
                             <div class="transformTab">
-                                命名参数：
+                                <span>命名参数：</span>
+                                <Button type="primary" icon="plus-round"  shape="circle" size="large" @click="addTableItem"></Button>
                             </div>
-                            <Table :columns="columns1" :data="data1"></Table>
+                            <Table :columns="columns1" :data="info.parameters.parameter"></Table>
                         </TabPane>
+                        <table-edit v-if="tableEditModal" :parameterList="info.parameters.parameter"></table-edit>
                         <TabPane label="日志">暂无</TabPane>
                         <TabPane label="日期">
                             <Form :model="formItem" :label-width="300">
@@ -146,7 +149,12 @@
 <script>
     import {mapState} from 'vuex';
     import {mapMutations} from 'vuex';
+    import tableEdit from '../modal/TableEdit';
+
     export default {
+        components: {
+            tableEdit
+        },
         data () {
             return {
                 modal: false,
@@ -169,6 +177,7 @@
                 columns1: [
                     {
                         title: '#',
+                        type: 'index',
                         key: 'first'
                     },
                     {
@@ -177,11 +186,46 @@
                     },
                     {
                         title: '默认值',
-                        key: 'default'
+                        key: 'defaultValue'
                     },
                     {
                         title: '描述',
                         key: 'description'
+                    },
+                    {
+                        title: '操作',
+                        key: 'operation',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            console.log('click table edit');
+                                            this.tableEditShow(true);
+                                        }
+                                    }
+                                }, '编辑'),
+                                h('Button', {
+                                    props: {
+                                        type: 'error',
+                                        size: 'small'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            console.log('click table delte');
+                                        }
+                                    }
+                                }, '删除')
+                            ]);
+                        }
                     }
                 ],
                 data1: [
@@ -217,17 +261,155 @@
                         table: '',
                         field: ''
                     }
-                ]
+                ],
+                info: {
+                    name: '',
+                    description: '',
+                    extendedDescription: '',
+                    transVersion: '',
+                    transType: '',
+                    transStatus: '',
+                    directory: '',
+                    parameters: {
+                        parameter: [
+                            {
+                                name: '1',
+                                defaultValue: '1',
+                                description: '1'
+                            }
+                        ]
+                    },
+                    log: {
+                        'trans-log-table': {
+                            connections: '',
+                            schema: '',
+                            table: '',
+                            sizeLimitLines: '',
+                            interval: '',
+                            timeoutDays: '',
+                            field: [
+                                {
+                                    id: 'ID_BATCH',
+                                    enable: 'Y',
+                                    name: 'ID_BATCH'
+                                },
+                                {
+                                    id: 'CHANNEL_ID',
+                                    enabled: 'Y',
+                                    name: 'CHANNEL_ID'
+                                },
+                                {
+                                    id: 'TRANSNAME',
+                                    enabled: 'Y',
+                                    name: 'TRANSNAME'
+                                },
+                                {
+                                    id: 'STATUS',
+                                    enabled: 'Y',
+                                    name: 'STATUS'
+                                },
+                                {
+                                    id: 'LINES_READ',
+                                    enabled: 'Y',
+                                    name: 'LINES_READ',
+                                    subject: ''
+                                },
+                                {
+                                    id: 'LINES_WRITTEN',
+                                    enabled: 'Y',
+                                    name: 'LINES_WRITTEN',
+                                    subject: ''
+                                },
+                                {
+                                    id: 'LINES_UPDATED',
+                                    enabled: 'Y',
+                                    name: 'LINES_UPDATED',
+                                    subject: ''
+                                },
+                                {
+                                    id: 'LINES_INPUT',
+                                    enabled: 'Y',
+                                    name: 'LINES_INPUT',
+                                    subject: ''
+                                },
+                                {
+                                    id: 'LINES_OUTPUT',
+                                    enabled: 'Y',
+                                    name: 'LINES_OUTPUT',
+                                    subject: ''
+                                },
+                                {
+                                    id: 'LINES_REJECTED',
+                                    enabled: 'Y',
+                                    name: 'LINES_REJECTED',
+                                    subject: ''
+                                },
+                                {
+                                    id: 'ERRORS',
+                                    enabled: 'Y',
+                                    name: 'ERRORS'
+                                },
+                                {
+                                    id: 'STARTDATE',
+                                    enabled: 'Y',
+                                    name: 'STARTDATE'
+                                },
+                                {
+                                    id: 'ENDDATE',
+                                    enabled: 'Y',
+                                    name: 'ENDDATE'
+                                },
+                                {
+                                    id: 'LOGDATE',
+                                    enabled: 'Y',
+                                    name: 'LOGDATE'
+                                },
+                                {
+                                    id: 'DEPDATE',
+                                    enabled: 'Y',
+                                    name: 'DEPDATE'
+                                },
+                                {
+                                    id: 'REPLAYDATE',
+                                    enabled: 'Y',
+                                    name: 'REPLAYDATE'
+                                },
+                                {
+                                    id: 'LOG_FIELD',
+                                    enabled: 'Y',
+                                    name: 'LOG_FIELD'
+                                },
+                                {
+                                    id: 'EXECUTING_SERVER',
+                                    enabled: 'N',
+                                    name: 'EXECUTING_SERVER'
+                                },
+                                {
+                                    id: 'EXECUTING_USER',
+                                    enabled: 'N',
+                                    name: 'EXECUTING_USER'
+                                },
+                                {
+                                    id: 'CLIENT',
+                                    enabled: 'N',
+                                    name: 'CLIENT'
+                                }
+                            ]
+                        }
+                    }
+                }
             };
         },
         computed: {
             ...mapState([
-                'changeShow'
+                'changeShow',
+                'tableEditModal'
             ])
         },
         methods: {
             ...mapMutations([
-                'okCallbackTransform'
+                'okCallbackTransform',
+                'tableEditShow'
             ]),
             ok () {
                 this.okCallbackTransform(false);
@@ -235,8 +417,8 @@
             cancel () {
                 this.okCallbackTransform(false);
             },
-            getFilePath () {
-                this.formItem.filePath = this.$refs.input.value;
+            getDirectory () {
+                this.info.directory = this.$refs.input.value;
             },
             instance (type) {
                 const title = '正常！';
@@ -255,6 +437,9 @@
                     });
                     break;
                 }
+            },
+            addTableItem () {
+                this.tableEditShow(true);
             }
         },
         mounted () {
@@ -265,6 +450,12 @@
                 if (oldval && !val){
                     this.okCallbackTransform(false);
                 }
+            },
+            info: {
+                handler (newVal) {
+                    console.log(newVal);
+                },
+                deep: true
             }
         }
 
@@ -302,6 +493,12 @@
         margin-top: 6px;
         margin-bottom: 6px;
         margin-left: 4px;
+        text-align: right;
+        position: relative;
+    }
+    .transformTab span {
+        float: left;
+        padding: 10px 0;
     }
     .ivu-form-item {
         margin-bottom: 10px;

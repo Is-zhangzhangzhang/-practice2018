@@ -67,6 +67,10 @@ const mutations = {
     },
     reviewShow (state, value){
         state.isReview = value;
+    },
+    tableEditShow (state, value){
+        state.tableEditModal = value;
+        console.log('命令参数table编辑');
     }
 };
 

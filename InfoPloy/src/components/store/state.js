@@ -15,7 +15,8 @@ const state = {
         target: ''
     },
     isSetting: false,
-    changeShow: false
+    changeShow: false,
+    tableEditModal: false
 };
 
 export default state;
