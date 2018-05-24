@@ -59,7 +59,9 @@
                             <Table :columns="columns1" :data="info.parameters.parameter"></Table>
                         </TabPane>
                         <table-edit v-if="tableEditModal" :parameterList="info.parameters.parameter"></table-edit>
-                        <TabPane label="日志">暂无</TabPane>
+                        <TabPane label="日志">
+                            <log></log>
+                        </TabPane>
                         <TabPane label="日期">
                             <Form :model="formItem" :label-width="300">
                                 <FormItem label="最大日期数据库连接：">
@@ -150,10 +152,12 @@
     import {mapState} from 'vuex';
     import {mapMutations} from 'vuex';
     import tableEdit from '../modal/TableEdit';
+    import log from '../modal/configurationLog';
 
     export default {
         components: {
-            tableEdit
+            tableEdit,
+            log
         },
         data () {
             return {

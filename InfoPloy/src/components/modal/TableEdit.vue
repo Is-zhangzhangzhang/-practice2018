@@ -32,7 +32,7 @@
             return {
                 modal: false,
                 tableData: {
-                    name:'',
+                    name: '',
                     defaultValue: '',
                     description: ''
                 }
@@ -62,7 +62,7 @@
                     name: this.tableData.name,
                     defaultValue: this.tableData.defaultValue,
                     description: this.tableData.description
-                })
+                });
             }
         }
     };
