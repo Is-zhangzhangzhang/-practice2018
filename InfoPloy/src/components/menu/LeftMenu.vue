@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
+        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" @on-select="onMenuSelect">
             <Submenu name="1">
                 <template slot="title">
                     <icon type="ios-navigate"></icon>
@@ -14,6 +14,18 @@
                     输出
                 </template>
                 <menu-item name="2-1" class="draggable-component">表输出</menu-item>
+            </Submenu>
+            <Submenu name="3">
+                <template slot="title">
+                    <icon type="ios-navigate"></icon>
+                    转换
+                </template>
+                <menu-item name="3-1">Steps（步骤）</menu-item>
+                <menu-item name="3-2">数据库分区schemas</menu-item>
+                <menu-item name="3-3">子服务器</menu-item>
+                <menu-item name="3-4">InfoPoly集群schemas</menu-item>
+                <menu-item name="3-5">Hadoop clusters</menu-item>
+                <menu-item name="3-6">Data Services</menu-item>
             </Submenu>
         </Menu>
     </div>
@@ -243,6 +255,11 @@
             };
         },
         methods: {
+            onMenuSelect (name) {
+                if (name === '3-2') {
+                    console.log(name);
+                }
+            }
         }
     };
 </script>

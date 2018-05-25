@@ -16,7 +16,8 @@ const state = {
     },
     isSetting: false,
     changeShow: false,
-    tableEditModal: false
+    tableEditModal: false,
+    partitionSchemaModal: false
 };
 
 export default state;
