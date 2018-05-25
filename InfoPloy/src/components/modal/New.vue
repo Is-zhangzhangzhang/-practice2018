@@ -369,6 +369,7 @@
         },
         mounted () {
             this.modal = this.newModal;
+            console.log('打开了新建数据库模态框的vue');
         },
         watch: {
             modal (val, oldval) {

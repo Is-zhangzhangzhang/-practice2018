@@ -41,8 +41,6 @@ module.exports = {
         'computed-property-spacing': 2,
         // 必须使用 if(){} 中的{}
         'curly': [2, 'all'],
-        // 强制属性名驼峰法命名
-        'camelcase': [2,{'properties': 'always'}],
         // 强制用使用self作为this的别名
         'consistent-this':[2,'self'],
         // switch语句最后必须有default

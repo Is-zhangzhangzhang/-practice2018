@@ -25,34 +25,171 @@
             </Menu>
             <div style="padding-left: 20px; width: 700px;">
                 <div v-if="tab === '1'" class="table-top">
-                    <Form :model="formItem" :label-width="150">
-                        <FormItem label="最大日期数据库连接：">
-                            <Select >
-                                <Option value="oracle">oracle</Option>
+                    <Form :model="formItem" :label-width="160">
+                        <FormItem label="日志数据库连接：">
+                            <Select style="width:78%" v-model="logData['trans-log-table'].connection">
+                                <Option value=""></Option>
                             </Select>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
+                            <Button type="primary" @click="newModalShow(true)">新建...</Button>
+                        </FormItem>
+                        <FormItem label="日志表模式：">
+                            <Input v-model="logData['trans-log-table'].schema"/>
                         </FormItem>
                         <FormItem label="日志表：">
-                            <Input />
+                            <Input v-model="logData['trans-log-table'].table"/>
                         </FormItem>
-                        <FormItem label="最大日期字段：">
-                            <Input/>
+                        <FormItem label="日志记录间隔时间（秒）：">
+                            <Input v-model="logData['trans-log-table'].interval"/>
                         </FormItem>
-                        <FormItem label="最大日期偏移（秒）：">
-                            <Input />
+                        <FormItem label="日志记录过时时间（天）：">
+                            <Input v-model="logData['trans-log-table'].timeout_days"/>
                         </FormItem>
-                        <FormItem label="最大日期区别（秒）：">
-                            <Input/>
+                        <FormItem label="在内存中保存日志行数：">
+                            <Input v-model="logData['trans-log-table'].size_limit_lines"/>
                         </FormItem>
                     </Form>
+                    <div class="transformLog">
+                        <div>
+                            <span>日志字段：</span>
+                        </div>
+                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['trans-log-table'].field"></Table>
+                        <Button @click="handleSelectAll(true)">Set all selected</Button>
+                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <new-modal v-if="this.newModal"></new-modal>
+                    </div>
                 </div>
                 <div v-if="tab === '2'" class="table-top">
-
+                    <Form :model="formItem" :label-width="160">
+                        <FormItem label="日志数据库连接：">
+                            <Select style="width:78%" v-model="logData['step-log-table'].connection">
+                                <Option value=""></Option>
+                            </Select>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
+                            <Button type="primary" @click="newModalShow(true)">新建...</Button>
+                        </FormItem>
+                        <FormItem label="日志表模式：">
+                            <Input v-model="logData['step-log-table'].schema"/>
+                        </FormItem>
+                        <FormItem label="日志表：">
+                            <Input v-model="logData['step-log-table'].table"/>
+                        </FormItem>
+                        <FormItem label="日志记录过时时间（天）：">
+                            <Input v-model="logData['step-log-table'].timeout_days"/>
+                        </FormItem>
+                    </Form>
+                    <div class="transformLog">
+                        <div>
+                            <span>日志字段：</span>
+                        </div>
+                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['step-log-table'].field"></Table>
+                        <Button @click="handleSelectAll(true)">Set all selected</Button>
+                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <new-modal v-if="this.newModal"></new-modal>
+                    </div>
                 </div>
                 <div v-if="tab === '3'" class="table-top">
-
+                    <Form :model="formItem" :label-width="160">
+                        <FormItem label="日志数据库连接：">
+                            <Select style="width:78%" v-model="logData['perf-log-table'].connection">
+                                <Option value=""></Option>
+                            </Select>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
+                            <Button type="primary" @click="newModalShow(true)">新建...</Button>
+                        </FormItem>
+                        <FormItem label="日志表模式：">
+                            <Input v-model="logData['perf-log-table'].schema"/>
+                        </FormItem>
+                        <FormItem label="日志表：">
+                            <Input v-model="logData['perf-log-table'].table"/>
+                        </FormItem>
+                        <FormItem label="日志记录间隔时间（秒）：">
+                            <Input v-model="logData['perf-log-table'].interval"/>
+                        </FormItem>
+                        <FormItem label="日志记录过时时间（天）：">
+                            <Input v-model="logData['perf-log-table'].timeout_days"/>
+                        </FormItem>
+                        <FormItem label="在内存中保存日志行数：">
+                            <Input v-model="logData['perf-log-table'].size_limit_lines"/>
+                        </FormItem>
+                    </Form>
+                    <div class="transformLog">
+                        <div>
+                            <span>日志字段：</span>
+                        </div>
+                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['perf-log-table'].field"></Table>
+                        <Button @click="handleSelectAll(true)">Set all selected</Button>
+                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <new-modal v-if="this.newModal"></new-modal>
+                    </div>
+                </div>
+                <div v-if="tab === '4'" class="table-top">
+                    <Form :model="formItem" :label-width="160">
+                        <FormItem label="日志数据库连接：">
+                            <Select style="width:78%" v-model="logData['channel-log-table'].connection">
+                                <Option value=""></Option>
+                            </Select>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
+                            <Button type="primary" @click="newModalShow(true)">新建...</Button>
+                        </FormItem>
+                        <FormItem label="日志表模式：">
+                            <Input v-model="logData['channel-log-table'].schema"/>
+                        </FormItem>
+                        <FormItem label="日志表：">
+                            <Input v-model="logData['channel-log-table'].table"/>
+                        </FormItem>
+                        <FormItem label="日志记录过时时间（天）：">
+                            <Input v-model="logData['channel-log-table'].timeout_days"/>
+                        </FormItem>
+                    </Form>
+                    <div class="transformLog">
+                        <div>
+                            <span>日志字段：</span>
+                        </div>
+                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['channel-log-table'].field"></Table>
+                        <Button @click="handleSelectAll(true)">Set all selected</Button>
+                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <new-modal v-if="this.newModal"></new-modal>
+                    </div>
                 </div>
                 <div v-if="tab === '5'" class="table-top">
-
+                    <Form :model="formItem" :label-width="160">
+                        <FormItem label="日志数据库连接：">
+                            <Select style="width:78%" v-model="logData['metrics-log-table'].connection">
+                                <Option value=""></Option>
+                            </Select>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
+                            <Button type="primary" @click="newModalShow(true)">新建...</Button>
+                        </FormItem>
+                        <FormItem label="日志表模式：">
+                            <Input v-model="logData['metrics-log-table'].schema"/>
+                        </FormItem>
+                        <FormItem label="日志表：">
+                            <Input v-model="logData['metrics-log-table'].table"/>
+                        </FormItem>
+                        <FormItem label="日志记录过时时间（天）：">
+                            <Input v-model="logData['metrics-log-table'].timeout_days"/>
+                        </FormItem>
+                    </Form>
+                    <div class="transformLog">
+                        <div>
+                            <span>日志字段：</span>
+                        </div>
+                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['metrics-log-table'].field"></Table>
+                        <Button @click="handleSelectAll(true)">Set all selected</Button>
+                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <new-modal v-if="this.newModal"></new-modal>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,7 +197,15 @@
 </template>
 
 <script>
+    import {mapMutations} from 'vuex';
+    import {mapState} from 'vuex';
+    import newModal from '../modal/New';
+
     export default {
+        props: ['logData'],
+        components: {
+            newModal
+        },
         data () {
             return {
                 modal: false,
@@ -73,13 +218,70 @@
                     regular: '',
                     unregular: ''
                 },
-                tab: '1'
+                tab: '1',
+                transformLogTablecolumns: [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center',
+                        key: 'enabled'
+                    },
+                    {
+                        title: '字段名称',
+                        key: 'id'
+                    },
+                    {
+                        title: 'Step name',
+                        key: 'subject'
+                    },
+                    {
+                        title: '字段描述',
+                        key: 'description'
+                    }
+                ],
+                data1: [
+                    {
+                        name: 'John Brown',
+                        age: 18,
+                        address: 'New York No. 1 Lake Park',
+                        date: '2016-10-03'
+                    },
+                    {
+                        name: 'Jim Green',
+                        age: 24,
+                        address: 'London No. 1 Lake Park',
+                        date: '2016-10-01'
+                    },
+                    {
+                        name: 'Joe Black',
+                        age: 30,
+                        address: 'Sydney No. 1 Lake Park',
+                        date: '2016-10-02'
+                    },
+                    {
+                        name: 'Jon Snow',
+                        age: 26,
+                        address: 'Ottawa No. 2 Lake Park',
+                        date: '2016-10-04'
+                    }
+                ]
             };
         },
+        computed: {
+            ...mapState([
+                'newModal'
+            ])
+        },
         methods: {
+            ...mapMutations([
+                'newModalShow'
+            ]),
             select (e) {
                 this.tab = e;
                 console.log(e);
+            },
+            handleSelectAll (status) {
+                this.$refs.selection.selectAll(status);
             }
         }
     };
@@ -140,5 +342,18 @@
 
     .vertical-center-modal .ivu-modal {
         top: 0;
+    }
+
+    .ivu-form-item {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .transformLog{
+        margin-top: 30px;
+    }
+
+    .transformLog div{
+        margin: 5px 0;
     }
 </style>
