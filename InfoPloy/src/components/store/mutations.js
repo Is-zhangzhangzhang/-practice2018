@@ -33,12 +33,6 @@ const mutations = {
         console.log('转换属性！');
         state.changeShow = value;
     },
-    /*
-     *cancelCallbackTransform (state, value) {
-     * state.changeShow = value;
-     * console.log(value);
-     *}
-     */
     //  日志设置
     setLogSetting (state){
         state.isSetting = true;
@@ -71,7 +65,24 @@ const mutations = {
     tableEditShow (state, value){
         state.tableEditModal = value;
         console.log('命令参数table编辑');
+    },
+    partitionSchemaShow (state, value){
+        state.partitionSchemaModal = value;
+        console.log('数据库分区Schema');
+    },
+    slaveServersShow (state, value){
+        state.slaveServersModal = value;
+        console.log('子服务器模态框');
+    },
+    clusterSchemasShow (state, value) {
+        state.clusterSchemasModal = value;
+        console.log('集群Schema');
+    },
+    notepadShow (state, value) {
+        state.notepadModal = value;
+        console.log('新建注释');
     }
+
 };
 
 export default mutations;

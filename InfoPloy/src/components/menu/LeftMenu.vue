@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']" @on-select="onMenuSelect">
+        <Menu active-name="1-2" ref="leftMenu" theme="light" width="auto" :open-names="['1']">
             <Submenu name="1">
                 <template slot="title">
                     <icon type="ios-navigate"></icon>
@@ -21,17 +21,30 @@
                     转换
                 </template>
                 <menu-item name="3-1">Steps（步骤）</menu-item>
-                <menu-item name="3-2">数据库分区schemas</menu-item>
-                <menu-item name="3-3">子服务器</menu-item>
-                <menu-item name="3-4">InfoPoly集群schemas</menu-item>
+                <menu-item name="3-2" @click.native="partitionSchemaClick">数据库分区schemas</menu-item>
+                <menu-item name="3-3" @click.native="slaveServersClick">子服务器</menu-item>
+                <menu-item name="3-4" @click.native="clusterSchemasClick">InfoPoly集群schemas</menu-item>
                 <menu-item name="3-5">Hadoop clusters</menu-item>
                 <menu-item name="3-6">Data Services</menu-item>
             </Submenu>
         </Menu>
+        <partition-schema v-if="partitionSchemaModal"></partition-schema>
+        <slave-servers v-if="slaveServersModal"></slave-servers>
+        <cluster-schemas v-if="clusterSchemasModal"></cluster-schemas>
     </div>
 </template>
 <script>
+    import {mapState} from 'vuex';
+    import {mapMutations} from 'vuex';
+    import partitionSchema from '../modal/partitionSchema';
+    import slaveServers from '../modal/slaveServers';
+    import clusterSchemas from '../modal/clusterSchemas';
     export default {
+        components: {
+            partitionSchema,
+            slaveServers,
+            clusterSchemas
+        },
         name: 'headMenu',
         data () {
             return {
@@ -251,14 +264,46 @@
                             }
                         ]
                     }
-                ]
+                ],
+                schemaSubmenu: {}
             };
         },
+        computed: {
+            ...mapState([
+                'partitionSchemaModal',
+                'slaveServersModal',
+                'clusterSchemasModal'
+            ])
+        },
+        mounted () {
+            this.$nextTick( function () {
+                this.$refs.leftMenu.updateOpened();
+                this.$refs.leftMenu.updateActiveName();
+            });
+        },
         methods: {
-            onMenuSelect (name) {
-                if (name === '3-2') {
-                    console.log(name);
-                }
+            ...mapMutations([
+                'partitionSchemaShow',
+                'slaveServersShow',
+                'clusterSchemasShow'
+            ]),
+            partitionSchemaClick () {
+                // 数据库分区schema
+                this.partitionSchemaShow(true);
+            },
+            slaveServersClick () {
+                console.log('子服务器');
+                this.slaveServersShow(true);
+            },
+            addPartitionSchemaMenu (data) {
+                this.schemaSubmenu = data;
+                console.log(this.schemaSubmenu);
+            },
+            clusterSchemasClick () {
+                this.clusterSchemasShow(true);
+            },
+            dbclickSchema () {
+                console.log('双击ok！！！');
             }
         }
     };

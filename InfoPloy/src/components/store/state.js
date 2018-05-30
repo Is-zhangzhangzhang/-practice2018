@@ -17,7 +17,10 @@ const state = {
     isSetting: false,
     changeShow: false,
     tableEditModal: false,
-    partitionSchemaModal: false
+    partitionSchemaModal: false,
+    slaveServersModal: false,
+    clusterSchemasModal: false,
+    notepadModal: false
 };
 
 export default state;

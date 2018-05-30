@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- 装换属性/ 命名参数 /  table-->
         <Modal v-model="modal"
                @on-ok="ok"
                @on-cancel="cancel">
