@@ -27,7 +27,7 @@
                 <div v-if="tab === '1'" class="table-top">
                     <Form :model="formItem" :label-width="160">
                         <FormItem label="日志数据库连接：">
-                            <Select style="width:78%" v-model="logData['trans-log-table'].connection">
+                            <Select style="width: 300px" v-model="logData['trans-log-table'].connection">
                                 <Option value=""></Option>
                             </Select>
                             <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
@@ -36,35 +36,49 @@
                             <Button type="primary" @click="newModalShow(true)">新建...</Button>
                         </FormItem>
                         <FormItem label="日志表模式：">
-                            <Input v-model="logData['trans-log-table'].schema"/>
+                            <Input v-model="logData['trans-log-table'].schema" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志表：">
-                            <Input v-model="logData['trans-log-table'].table"/>
+                            <Input v-model="logData['trans-log-table'].table" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志记录间隔时间（秒）：">
-                            <Input v-model="logData['trans-log-table'].interval"/>
+                            <Input v-model="logData['trans-log-table'].interval" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志记录过时时间（天）：">
-                            <Input v-model="logData['trans-log-table'].timeout_days"/>
+                            <Input v-model="logData['trans-log-table'].timeout_days" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="在内存中保存日志行数：">
-                            <Input v-model="logData['trans-log-table'].size_limit_lines"/>
+                            <Input v-model="logData['trans-log-table'].size_limit_lines" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                     </Form>
                     <div class="transformLog">
                         <div>
                             <span>日志字段：</span>
                         </div>
-                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['trans-log-table'].field"></Table>
-                        <Button @click="handleSelectAll(true)">Set all selected</Button>
-                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <Table border ref="selection" height="300" :columns="transLogTableColumns"
+                               :data="logData['trans-log-table'].field"></Table>
                         <new-modal v-if="this.newModal"></new-modal>
                     </div>
                 </div>
                 <div v-if="tab === '2'" class="table-top">
                     <Form :model="formItem" :label-width="160">
                         <FormItem label="日志数据库连接：">
-                            <Select style="width:78%" v-model="logData['step-log-table'].connection">
+                            <Select style="width: 300px" v-model="logData['step-log-table'].connection">
                                 <Option value=""></Option>
                             </Select>
                             <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
@@ -73,29 +87,37 @@
                             <Button type="primary" @click="newModalShow(true)">新建...</Button>
                         </FormItem>
                         <FormItem label="日志表模式：">
-                            <Input v-model="logData['step-log-table'].schema"/>
+                            <Input v-model="logData['step-log-table'].schema" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志表：">
-                            <Input v-model="logData['step-log-table'].table"/>
+                            <Input v-model="logData['step-log-table'].table" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志记录过时时间（天）：">
-                            <Input v-model="logData['step-log-table'].timeout_days"/>
+                            <Input v-model="logData['step-log-table'].timeout_days" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                     </Form>
                     <div class="transformLog">
                         <div>
                             <span>日志字段：</span>
                         </div>
-                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['step-log-table'].field"></Table>
-                        <Button @click="handleSelectAll(true)">Set all selected</Button>
-                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <Table border ref="selection" height="300" :columns="stepLogTableColumns"
+                               :data="logData['step-log-table'].field"></Table>
                         <new-modal v-if="this.newModal"></new-modal>
                     </div>
                 </div>
                 <div v-if="tab === '3'" class="table-top">
                     <Form :model="formItem" :label-width="160">
                         <FormItem label="日志数据库连接：">
-                            <Select style="width:78%" v-model="logData['perf-log-table'].connection">
+                            <Select style="width: 300px" v-model="logData['perf-log-table'].connection">
                                 <Option value=""></Option>
                             </Select>
                             <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
@@ -104,35 +126,49 @@
                             <Button type="primary" @click="newModalShow(true)">新建...</Button>
                         </FormItem>
                         <FormItem label="日志表模式：">
-                            <Input v-model="logData['perf-log-table'].schema"/>
+                            <Input v-model="logData['perf-log-table'].schema" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志表：">
-                            <Input v-model="logData['perf-log-table'].table"/>
+                            <Input v-model="logData['perf-log-table'].table" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志记录间隔时间（秒）：">
-                            <Input v-model="logData['perf-log-table'].interval"/>
+                            <Input v-model="logData['perf-log-table'].interval" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志记录过时时间（天）：">
-                            <Input v-model="logData['perf-log-table'].timeout_days"/>
+                            <Input v-model="logData['perf-log-table'].timeout_days" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="在内存中保存日志行数：">
-                            <Input v-model="logData['perf-log-table'].size_limit_lines"/>
+                            <Input v-model="logData['perf-log-table'].size_limit_lines" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                     </Form>
                     <div class="transformLog">
                         <div>
                             <span>日志字段：</span>
                         </div>
-                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['perf-log-table'].field"></Table>
-                        <Button @click="handleSelectAll(true)">Set all selected</Button>
-                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <Table border height="300" :columns="prefLogTableColumns"
+                               :data="logData['perf-log-table'].field"></Table>
                         <new-modal v-if="this.newModal"></new-modal>
                     </div>
                 </div>
                 <div v-if="tab === '4'" class="table-top">
                     <Form :model="formItem" :label-width="160">
                         <FormItem label="日志数据库连接：">
-                            <Select style="width:78%" v-model="logData['channel-log-table'].connection">
+                            <Select style="width: 300px" v-model="logData['channel-log-table'].connection">
                                 <Option value=""></Option>
                             </Select>
                             <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
@@ -141,29 +177,37 @@
                             <Button type="primary" @click="newModalShow(true)">新建...</Button>
                         </FormItem>
                         <FormItem label="日志表模式：">
-                            <Input v-model="logData['channel-log-table'].schema"/>
+                            <Input v-model="logData['channel-log-table'].schema" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志表：">
-                            <Input v-model="logData['channel-log-table'].table"/>
+                            <Input v-model="logData['channel-log-table'].table" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志记录过时时间（天）：">
-                            <Input v-model="logData['channel-log-table'].timeout_days"/>
+                            <Input v-model="logData['channel-log-table'].timeout_days" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                     </Form>
                     <div class="transformLog">
                         <div>
                             <span>日志字段：</span>
                         </div>
-                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['channel-log-table'].field"></Table>
-                        <Button @click="handleSelectAll(true)">Set all selected</Button>
-                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <Table border ref="selection" height="300" :columns="channelLogTableColumns"
+                               :data="logData['channel-log-table'].field"></Table>
                         <new-modal v-if="this.newModal"></new-modal>
                     </div>
                 </div>
                 <div v-if="tab === '5'" class="table-top">
                     <Form :model="formItem" :label-width="160">
                         <FormItem label="日志数据库连接：">
-                            <Select style="width:78%" v-model="logData['metrics-log-table'].connection">
+                            <Select style="width: 300px" v-model="logData['metrics-log-table'].connection">
                                 <Option value=""></Option>
                             </Select>
                             <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
@@ -172,22 +216,30 @@
                             <Button type="primary" @click="newModalShow(true)">新建...</Button>
                         </FormItem>
                         <FormItem label="日志表模式：">
-                            <Input v-model="logData['metrics-log-table'].schema"/>
+                            <Input v-model="logData['metrics-log-table'].schema" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志表：">
-                            <Input v-model="logData['metrics-log-table'].table"/>
+                            <Input v-model="logData['metrics-log-table'].table" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                         <FormItem label="日志记录过时时间（天）：">
-                            <Input v-model="logData['metrics-log-table'].timeout_days"/>
+                            <Input v-model="logData['metrics-log-table'].timeout_days" style="width: 300px"/>
+                            <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
+                                <Icon type="information-circled"></Icon>
+                            </Tooltip>
                         </FormItem>
                     </Form>
                     <div class="transformLog">
                         <div>
                             <span>日志字段：</span>
                         </div>
-                        <Table border ref="selection" height="300" :columns="transformLogTablecolumns" :data="logData['metrics-log-table'].field"></Table>
-                        <Button @click="handleSelectAll(true)">Set all selected</Button>
-                        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
+                        <Table border ref="selection" height="300" :columns="metricsLogTableColumns"
+                               :data="logData['metrics-log-table'].field"></Table>
                         <new-modal v-if="this.newModal"></new-modal>
                     </div>
                 </div>
@@ -219,12 +271,24 @@
                     unregular: ''
                 },
                 tab: '1',
-                transformLogTablecolumns: [
+                transLogTableColumns: [
                     {
-                        type: 'selection',
                         width: 60,
+                        title: '启用',
                         align: 'center',
-                        key: 'enabled'
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Checkbox', {
+                                    props: {
+                                        trueValue: 'Y',
+                                        value: this.logData['trans-log-table'].field[params.index].enabled
+                                    },
+                                    style: {
+                                        marginRight: '0'
+                                    }
+                                })
+                            ]);
+                        }
                     },
                     {
                         title: '字段名称',
@@ -239,32 +303,139 @@
                         key: 'description'
                     }
                 ],
-                data1: [
+                stepLogTableColumns: [
                     {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
+                        width: 60,
+                        title: '启用',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Checkbox', {
+                                    props: {
+                                        trueValue: 'Y',
+                                        falseValue: 'N',
+                                        value: this.logData['step-log-table'].field[params.index].enabled
+                                    },
+                                    style: {
+                                        marginRight: '0'
+                                    }
+                                })
+                            ]);
+                        }
                     },
                     {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
+                        title: '字段名称',
+                        key: 'id'
                     },
                     {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
+                        title: 'Step name',
+                        key: 'subject'
                     },
                     {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
+                        title: '字段描述',
+                        key: 'description'
+                    }
+                ],
+                prefLogTableColumns: [
+                    {
+                        width: 60,
+                        title: '启用',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Checkbox', {
+                                    props: {
+                                        trueValue: 'Y',
+                                        falseValue: 'N',
+                                        value: this.logData['pref-log-table'].field[params.index].enabled
+                                    },
+                                    style: {
+                                        marginRight: '0'
+                                    }
+                                })
+                            ]);
+                        }
+                    },
+                    {
+                        title: '字段名称',
+                        key: 'id'
+                    },
+                    {
+                        title: 'Step name',
+                        key: 'subject'
+                    },
+                    {
+                        title: '字段描述',
+                        key: 'description'
+                    }
+                ],
+                channelLogTableColumns: [
+                    {
+                        width: 60,
+                        title: '启用',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Checkbox', {
+                                    props: {
+                                        trueValue: 'Y',
+                                        falseValue: 'N',
+                                        value: this.logData['channel-log-table'].field[params.index].enabled
+                                    },
+                                    style: {
+                                        marginRight: '0'
+                                    }
+                                })
+                            ]);
+                        }
+                    },
+                    {
+                        title: '字段名称',
+                        key: 'id'
+                    },
+                    {
+                        title: 'Step name',
+                        key: 'subject'
+                    },
+                    {
+                        title: '字段描述',
+                        key: 'description'
+                    }
+                ],
+                metricsLogTableColumns: [
+                    {
+                        width: 60,
+                        title: '启用',
+                        align: 'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Checkbox', {
+                                    props: {
+                                        trueValue: 'Y',
+                                        falseValue: 'N',
+                                        value: this.logData['metrics-log-table'].field[params.index].enabled
+                                    },
+                                    style: {
+                                        marginRight: '0'
+                                    }
+                                })
+                            ]);
+                        }
+                    },
+                    {
+                        title: '字段名称',
+                        key: 'id'
+                    },
+                    {
+                        title: 'Step name',
+                        key: 'subject'
+                    },
+                    {
+                        title: '字段描述',
+                        key: 'description'
                     }
                 ]
+
             };
         },
         computed: {
@@ -349,11 +520,11 @@
         margin-top: 10px;
     }
 
-    .transformLog{
+    .transformLog {
         margin-top: 30px;
     }
 
-    .transformLog div{
+    .transformLog div {
         margin: 5px 0;
     }
 </style>

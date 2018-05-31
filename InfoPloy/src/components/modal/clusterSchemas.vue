@@ -7,34 +7,35 @@
             </p>
             <Form :label-width="250">
                 <FormItem label="Schema名称：">
-                    <Input v-model="clusterschemas.clusterschema[0].name"/>
+                    <Input v-model="clusterschemas.clusterschema[0].name" style="width: 300px"/>
                     <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
                         <Icon type="information-circled"></Icon>
                     </Tooltip>
                 </FormItem>
                 <FormItem label="端口">
-                    <Input v-model="clusterschemas.clusterschema[0].base_port"/>
+                    <Input v-model="clusterschemas.clusterschema[0].base_port" style="width: 300px"/>
                     <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
                         <Icon type="information-circled"></Icon>
                     </Tooltip>
                 </FormItem>
                 <FormItem label="Sockets缓存大小：">
-                    <Input v-model="clusterschemas.clusterschema[0].sockets_buffer_size"/>
+                    <Input v-model="clusterschemas.clusterschema[0].sockets_buffer_size" style="width: 300px"/>
                     <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
                         <Icon type="information-circled"></Icon>
                     </Tooltip>
                 </FormItem>
                 <FormItem label="Sockets刷新间隔（rows）：">
-                    <Input v-model="clusterschemas.clusterschema[0].sockets_flush_interval"/>
+                    <Input v-model="clusterschemas.clusterschema[0].sockets_flush_interval" style="width: 300px"/>
                     <Tooltip content="使用CTRL-ALT-SPACE选择一个变量" placement="top">
                         <Icon type="information-circled"></Icon>
                     </Tooltip>
                 </FormItem>
                 <FormItem label="Sockets数据是否压缩?">
+                    <checkbox true-value="Y" v-model="clusterschemas.clusterschema[0].sockets_compressed"></checkbox>
+                </FormItem>
+                <FormItem label="Dynamic cluster：">
                     <checkbox true-value="Y" v-model="clusterschemas.clusterschema[0].dynamic"></checkbox>
                 </FormItem>
-                <checkbox true-value=""></checkbox>
-
             </Form>
             <Table highlight-row :columns="clusterschemasCol" :data="clusterschemas.clusterschema[0].slaveservers"></Table>
         </Modal>
@@ -49,7 +50,7 @@
         data () {
             return {
                 modal: false,
-                clusterschemasCol:[
+                clusterschemasCol: [
                     {
                         type: 'index',
                         width: 60,

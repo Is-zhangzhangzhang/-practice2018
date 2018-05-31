@@ -9,7 +9,7 @@
                 <i-col span="24" class="demo-tabs-style2">
                     <Tabs type="card">
                         <TabPane label="转换">
-                            <Form :model="formItem" :label-width="300">
+                            <Form :model="info" :label-width="300">
                                 <FormItem label="转换名称：">
                                     <Input v-model="info.name" style="width: 300px"/>
                                 </FormItem>
@@ -23,7 +23,7 @@
                                     <Input v-model="info.extended_description" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="状态：">
-                                    <Select v-model="info.trans_status">
+                                    <Select v-model="info.trans_status" style="width: 300px">
                                         <Option value="1">草案</Option>
                                         <Option value="2">产品</Option>
                                         <Option value="0">&nbsp;</Option>
@@ -38,16 +38,16 @@
                                     <input type="file" name="review" id="review" v-show="false" @change="getDirectory" ref="input"/>
                                 </FormItem>
                                 <FormItem label="创建者">
-                                    <Input v-model="formItem.creator" style="width: 300px"/>
+                                    <Input v-model="info.created_user" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="创建日期">
-                                    <Input v-model="formItem.createTime" style="width: 300px"/>
+                                    <Input v-model="info.created_date" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="最近修改用户">
-                                    <Input v-model="formItem.unregular" style="width: 300px"/>
+                                    <Input v-model="info.modified_user" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="最近修改日期">
-                                    <Input v-model="formItem.modifyTime" style="width: 300px"/>
+                                    <Input v-model="info.modified_date" style="width: 300px"/>
                                 </FormItem>
                             </Form>
                         </TabPane>
@@ -58,12 +58,12 @@
                             </div>
                             <Table :columns="paramTableColumn" :data="info.parameters.parameter"></Table>
                         </TabPane>
-                        <table-edit v-if="tableEditModal" :parameterList="info.parameters.parameter"></table-edit>
+                        <table-edit v-if="tableEditModal" :parameterList="info.parameters.parameter" :lineIndex="lineIndex" :mode="mode"></table-edit>
                         <TabPane label="日志">
                             <log :logData="info.log"></log>
                         </TabPane>
                         <TabPane label="日期">
-                            <Form :model="formItem" :label-width="300">
+                            <Form :model="info" :label-width="300">
                                 <FormItem label="最大日期数据库连接：">
                                     <Select v-model="info.maxdate.connection" style="width:300px">
                                         <Option value="oracle">oracle</Option>
@@ -95,13 +95,13 @@
                                     <Input v-model="info.size_rowset" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="转换时是否在日志中记录反馈">
-                                    <Checkbox v-model="info.feedback_shown"></Checkbox>
+                                    <Checkbox v-model="info.feedback_shown" true-value="Y"></Checkbox>
                                 </FormItem>
                                 <FormItem label="每个反馈行的处理记录数">
                                     <Input v-model="info.feedback_size" style="width: 300px"/>
                                 </FormItem>
                                 <FormItem label="使用唯一连接">
-                                    <Checkbox v-model="info.unique_connections"></Checkbox>
+                                    <Checkbox v-model="info.unique_connections" true-value="Y"></Checkbox>
                                 </FormItem>
                                 <FormItem label="共享对象文件">
                                     <Input v-model="info.shared_objects_file" style="width: 300px"/>
@@ -110,7 +110,7 @@
                                     </Poptip>
                                 </FormItem>
                                 <FormItem label="管理线程优先级？">
-                                    <Checkbox v-model="single3"></Checkbox>
+                                    <Checkbox v-model="info.using_thread_priorities" true-value="Y"></Checkbox>
                                 </FormItem>
                                 <FormItem label="转换引擎类型">
                                     <Select v-model="info.trans_type" placeholder="Normal" style="width: 300px">
@@ -122,9 +122,9 @@
                             </Form>
                         </TabPane>
                         <TabPane label="监控">
-                            <Form :model="formItem" :label-width="300">
+                            <Form :model="info" :label-width="300">
                                 <FormItem label="开启步骤性能监控：">
-                                    <Checkbox v-model="info.capture_step_performance"></Checkbox>
+                                    <Checkbox v-model="info.capture_step_performance" true-value="Y"></Checkbox>
                                 </FormItem>
                                 <FormItem label="步骤性能测量间隔：">
                                     <Input v-model="info.step_performance_capturing_delay" style="width: 300px"/>
@@ -153,7 +153,7 @@
     import {mapState} from 'vuex';
     import {mapMutations} from 'vuex';
     import tableEdit from '../modal/TableEdit';
-    import log from '../modal/configurationLog';
+    import log from '../modal/ConfigurationLog';
 
     export default {
         components: {
@@ -163,21 +163,10 @@
         data: function () {
             return {
                 modal: false,
-                single: false,
-                single1: false,
-                single2: false,
-                single3: false,
+                lineIndex: 0,
+                mode: '0', //   1:add; 2:edit
                 editData: {
                     name: ''
-                },
-                formItem: {
-                    select: '',
-                    filePath: '',
-                    regular: '',
-                    unregular: '',
-                    creator: '-',
-                    createTime: 'Wed Apr 18 15:20:26 CST 2018',
-                    modifyTime: 'Wed Apr 18 15:20:26 CST 2018'
                 },
                 paramTableColumn: [
                     {
@@ -214,6 +203,7 @@
                                     on: {
                                         click: () => {
                                             console.log('click table edit');
+                                            this.editParamTableItem(params.index);
                                             this.tableEditShow(true);
                                         }
                                     }
@@ -258,15 +248,15 @@
                     description: '',
                     extended_description: '',
                     trans_version: '',
-                    trans_type: '',
+                    trans_type: 'Normal',
                     trans_status: '',
-                    directory: '',
+                    directory: '/',
                     parameters: {
                         parameter: [
                             {
-                                name: '1',
-                                defaultValue: '1',
-                                description: '1'
+                                name: '',
+                                defaultValue: '',
+                                description: ''
                             }
                         ]
                     },
@@ -280,68 +270,58 @@
                             timeout_days: '',
                             field: [
                                 {
-                                    id: 'start',
-                                    enable: 'Y',
-                                    _checked: true,
+                                    id: 'ID_BATCH',
+                                    enabled: 'Y',
                                     name: 'ID_BATCH'
                                 },
                                 {
                                     id: 'CHANNEL_ID',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'CHANNEL_ID'
                                 },
                                 {
                                     id: 'TRANSNAME',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'TRANSNAME'
                                 },
                                 {
                                     id: 'STATUS',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'STATUS'
                                 },
                                 {
                                     id: 'LINES_READ',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LINES_READ',
                                     subject: 'step name'
                                 },
                                 {
                                     id: 'LINES_WRITTEN',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LINES_WRITTEN',
                                     subject: ''
                                 },
                                 {
                                     id: 'LINES_UPDATED',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LINES_UPDATED',
                                     subject: ''
                                 },
                                 {
                                     id: 'LINES_INPUT',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LINES_INPUT',
                                     subject: ''
                                 },
                                 {
                                     id: 'LINES_OUTPUT',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LINES_OUTPUT',
                                     subject: ''
                                 },
                                 {
                                     id: 'LINES_REJECTED',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LINES_REJECTED',
                                     subject: ''
                                 },
@@ -354,55 +334,46 @@
                                 {
                                     id: 'STARTDATE',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'STARTDATE'
                                 },
                                 {
                                     id: 'ENDDATE',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'ENDDATE'
                                 },
                                 {
                                     id: 'LOGDATE',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LOGDATE'
                                 },
                                 {
                                     id: 'DEPDATE',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'DEPDATE'
                                 },
                                 {
                                     id: 'REPLAYDATE',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'REPLAYDATE'
                                 },
                                 {
                                     id: 'LOG_FIELD',
                                     enabled: 'Y',
-                                    _checked: true,
                                     name: 'LOG_FIELD'
                                 },
                                 {
                                     id: 'EXECUTING_SERVER',
                                     enabled: 'N',
-                                    _checked: true,
                                     name: 'EXECUTING_SERVER'
                                 },
                                 {
                                     id: 'EXECUTING_USER',
                                     enabled: 'N',
-                                    _checked: true,
                                     name: 'EXECUTING_USER'
                                 },
                                 {
                                     id: 'CLIENT',
                                     enabled: 'N',
-                                    _checked: false,
                                     name: 'CLIENT'
                                 }
                             ]
@@ -480,7 +451,7 @@
                                 },
                                 {
                                     id: 'LOG_FIELD',
-                                    enabled: 'N',
+                                    enabled: 'Y',
                                     name: 'LOG_FIELD'
                                 }
                             ]
@@ -721,7 +692,7 @@
                     modified_user: '',
                     modified_date: '',
                     key_for_session_key: '',
-                    is_key_private: 'Y'
+                    is_key_private: 'N'
                 }
             };
         },
@@ -764,7 +735,13 @@
                 }
             },
             addTableItem () {
+                this.mode = 1;
                 this.tableEditShow(true);
+            },
+            editParamTableItem (index) {
+                console.log(index);
+                this.mode = 2;
+                this.lineIndex = index;
             },
             delTransformParamTableItem (index) {
                 this.info.parameters.parameter.splice(index, 1);

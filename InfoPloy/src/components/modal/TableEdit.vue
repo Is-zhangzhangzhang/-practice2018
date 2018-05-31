@@ -28,7 +28,7 @@
     import {mapMutations} from 'vuex';
     export default {
         name: 'TableEdit',
-        props: ['parameterList'],
+        props: ['parameterList', 'lineIndex', 'mode'],
         data (){
             return {
                 modal: false,
@@ -47,6 +47,10 @@
         mounted (){
             this.modal = this.tableEditModal;
             console.log('成功引入表格编辑！');
+            console.log(this.mode);
+            if (this.mode === 2) {
+                this.showEditItem();
+            }
         },
         methods: {
             ...mapMutations([
@@ -58,12 +62,25 @@
             },
             ok () {
                 this.tableEditShow(false);
+                console.log(this.lineIndex);
                 console.log(this.tableData);
-                this.parameterList.push({
-                    name: this.tableData.name,
-                    defaultValue: this.tableData.defaultValue,
-                    description: this.tableData.description
-                });
+                if (this.mode === 1) {
+                    this.parameterList.push({
+                        name: this.tableData.name,
+                        defaultValue: this.tableData.defaultValue,
+                        description: this.tableData.description
+                    });
+                } else {
+                    this.parameterList[this.lineIndex].name = this.tableData.name;
+                    this.parameterList[this.lineIndex].defaultValue = this.tableData.defaultValue;
+                    this.parameterList[this.lineIndex].description = this.tableData.description;
+                }
+            },
+            showEditItem () {
+                console.log(this.lineIndex);
+                this.tableData.name = this.parameterList[this.lineIndex].name;
+                this.tableData.description = this.parameterList[this.lineIndex].description;
+                this.tableData.defaultValue = this.parameterList[this.lineIndex].defaultValue;
             }
         }
     };

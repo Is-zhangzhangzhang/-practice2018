@@ -36,9 +36,9 @@
 <script>
     import {mapState} from 'vuex';
     import {mapMutations} from 'vuex';
-    import partitionSchema from '../modal/partitionSchema';
-    import slaveServers from '../modal/slaveServers';
-    import clusterSchemas from '../modal/clusterSchemas';
+    import partitionSchema from '../modal/PartitionSchema';
+    import slaveServers from '../modal/SlaveServers';
+    import clusterSchemas from '../modal/ClusterSchemas';
     export default {
         components: {
             partitionSchema,
