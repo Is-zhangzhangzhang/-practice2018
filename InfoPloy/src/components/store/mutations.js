@@ -81,9 +81,31 @@ const mutations = {
     notepadShow (state, value) {
         state.notepadModal = value;
         console.log('新建注释');
+    },
+    runTransShow (state, value) {
+        state.runTransModal = value;
+    },
+    //  数据库增加分区
+    addPartitionSchemaStore (state, data) {
+        state.partitionschemas.partitionschema.push({
+            name: data.name,
+            partition: data.partition,
+            dynamic: data.dynamic,
+            partitions_per_slave: data.partitions_per_slave
+        });
+    },
+    // 编辑数据库分区
+    editPartitionSchemaStore (state, data) {
+        state.partitionschemas.partitionschema.name = data.name;
+        state.partitionschemas.partitionschema.partirion = [];
+        state.partitionschemas.partitionschema.partition = data.partition;
+        state.partitionschemas.partitionschema.dynamic = data.dynamic;
+        state.partitionschemas.partitionschema.partitions_per_slave = data.partitions_per_slave;
+    },
+    // 输出数据库分区
+    delPartitionSchemaStore (state, index) {
+        state.partitionschemas.partitionschema.splice(index, 1);
     }
-
 };
 
 export default mutations;
-

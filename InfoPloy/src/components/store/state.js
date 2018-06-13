@@ -20,7 +20,41 @@ const state = {
     partitionSchemaModal: false,
     slaveServersModal: false,
     clusterSchemasModal: false,
-    notepadModal: false
+    notepadModal: false,
+    runTransModal: false,
+    partitionschemas: { //  分区schema数据
+        partitionschema: []
+    },
+    clusterschemas: { //    集群schema的数据
+        clusterschema: [
+            {
+                name: '1',
+                base_port: '40000',
+                sockets_buffer_size: '2000',
+                sockets_flush_interval: '5000',
+                sockets_compressed: 'Y',
+                dynamic: 'N',
+                slaveservers: [
+                    {
+                        name: 'clusterschema'
+                    }
+                ]
+            },
+            {
+                name: '2',
+                base_port: '40000',
+                sockets_buffer_size: '2000',
+                sockets_flush_interval: '5000',
+                sockets_compressed: 'Y',
+                dynamic: 'N',
+                slaveservers: [
+                    {
+                        name: 'clusterschema'
+                    }
+                ]
+            }
+        ]
+    }
 };
 
 export default state;

@@ -5,10 +5,10 @@
                 {{item.name}}
                 <Icon :type="item.icon"></Icon>
             </a>
-            <DropdownMenu slot="list" class="drop-down">
-                <div v-for="(value, val) in item.menuChildList" :key="val" class="menu-item">
-                    <Dropdown v-if="value.isShow" :placement="value.isShow">
-                        <DropdownItem>
+            <DropdownMenu slot="list" class="drop-down" >
+                <div v-for="(value, val) in item.menuChildList" :key="val" class="menu-item" @click="doMore(value)">
+                    <Dropdown v-if="value.isShow" :placement="value.isShow" >
+                        <DropdownItem >
                             {{value.name}}
                             <Icon :type="value.icon"></Icon>
                         </DropdownItem>
@@ -22,11 +22,18 @@
                 </div>
             </DropdownMenu>
         </Dropdown>
+        <run-trans-modal v-if="runTransModal"></run-trans-modal>
     </div>
 </template>
 <script>
+    import {mapState} from 'vuex';
+    import {mapMutations} from 'vuex';
+    import runTransModal from '../trans/run/TransRunDialog';
     export default {
         name: 'headMenu',
+        components: {
+            runTransModal
+        },
         data () {
             return {
                 menuList: [
@@ -172,6 +179,52 @@
                         ]
                     },
                     {
+                        name: '执行（R)',
+                        icon: 'monitor',
+                        menuChildList: [
+                            {
+                                name: '运行',
+                                on: {
+                                    click: () => {
+                                        this.run();
+                                    }
+                                }
+                            },
+                            {
+                                name: 'Run Options...'
+                            },
+                            {
+                                name: '预览'
+                            },
+                            {
+                                name: '调试'
+                            },
+                            {
+                                name: '重放'
+                            },
+                            {
+                                name: '校验'
+                            },
+                            {
+                                name: '影响分析'
+                            },
+                            {
+                                name: '获取SQL'
+                            },
+                            {
+                                divided: true,
+                                name: '显示最近一次的操作',
+                                icon: 'ios-arrow-right',
+                                isShow: 'right-start',
+                                childList: [
+                                    '显示最近一次影响分析',
+                                    '显示最近一次影响结果',
+                                    '显示最近一次预览结果'
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         name: '工具（V)',
                         icon: 'monitor',
                         menuChildList: [
@@ -248,7 +301,20 @@
                 ]
             };
         },
+        computed: {
+            ...mapState([
+                'runTransModal'
+            ])
+        },
         methods: {
+            ...mapMutations([
+                'runTransShow'
+            ]),
+            doMore (data) {
+                if (data.name === '运行'){
+                    this.runTransShow(true);
+                }
+            }
         }
     };
 </script>

@@ -1,34 +1,35 @@
 <template>
     <div>
-        <Menu active-name="1-2" ref="leftMenu" theme="light" width="auto" :open-names="['1']">
+        <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
             <Submenu name="1">
-                <template slot="title">
-                    <icon type="ios-navigate"></icon>
-                    输入
-                </template>
-                <menu-item name="1-1" class="draggable-component">表输入</menu-item>
-            </Submenu>
-            <Submenu name="2">
-                <template slot="title">
-                    <icon type="ios-keypad"></icon>
-                    输出
-                </template>
-                <menu-item name="2-1" class="draggable-component">表输出</menu-item>
-            </Submenu>
-            <Submenu name="3">
                 <template slot="title">
                     <icon type="ios-navigate"></icon>
                     转换
                 </template>
-                <menu-item name="3-1">Steps（步骤）</menu-item>
-                <menu-item name="3-2" @click.native="partitionSchemaClick">数据库分区schemas</menu-item>
-                <menu-item name="3-3" @click.native="slaveServersClick">子服务器</menu-item>
-                <menu-item name="3-4" @click.native="clusterSchemasClick">InfoPoly集群schemas</menu-item>
-                <menu-item name="3-5">Hadoop clusters</menu-item>
-                <menu-item name="3-6">Data Services</menu-item>
+                <menu-item name="1-1">Steps（步骤）</menu-item>
+                <Submenu name="1-2" @contextmenu.native="showContextMenu(newPartitionContextMenuData)">
+                    <template slot="title" ref="refPartitionSchema">数据库分区schemas</template>
+                    <menu-item v-for="(data) in partitionschemas.partitionschema"
+                               @contextmenu.native="showContextMenu(editPartitionContextMenuData)"
+                               @dblclick.native="dblClickEditPartitionSchema"
+                               :name="data.name"
+                               :key="data.name">{{data.name}}</menu-item>
+                </Submenu>
+                <vue-context-menu :contextMenuData="newPartitionContextMenuData"
+                                  @newPartitionSchema="newPartitionSchema">
+                </vue-context-menu>
+                <vue-context-menu :contextMenuData="editPartitionContextMenuData"
+                                  @editPartitionSchema="editPartitionSchema"
+                                  @delPartitionSchema="delPartitionSchema"
+                                  @sharePartitionSchema="sharePartitionSchema">
+                </vue-context-menu>
+                <menu-item name="1-3" @dblclick.native="slaveServersClick">子服务器</menu-item>
+                <menu-item name="1-4" @dblclick.native="clusterSchemasClick">InfoPoly集群schemas</menu-item>
+                <menu-item name="1-5">Hadoop clusters</menu-item>
+                <menu-item name="1-6">Data Services</menu-item>
             </Submenu>
         </Menu>
-        <partition-schema v-if="partitionSchemaModal"></partition-schema>
+        <partition-schema v-if="partitionSchemaModal" :mode="partitionSchemaModalMode" :editSchemaData="editPartitionSchemaData"></partition-schema>
         <slave-servers v-if="slaveServersModal"></slave-servers>
         <cluster-schemas v-if="clusterSchemasModal"></cluster-schemas>
     </div>
@@ -36,16 +37,16 @@
 <script>
     import {mapState} from 'vuex';
     import {mapMutations} from 'vuex';
-    import partitionSchema from '../modal/PartitionSchema';
-    import slaveServers from '../modal/SlaveServers';
-    import clusterSchemas from '../modal/ClusterSchemas';
+    import partitionSchema from '../partition/PartitionSchema';
+    import slaveServers from '../Server/SlaveServers';
+    import clusterSchemas from '../cluster/ClusterSchemas';
     export default {
+        name: 'headMenu',
         components: {
             partitionSchema,
             slaveServers,
             clusterSchemas
         },
-        name: 'headMenu',
         data () {
             return {
                 menuList: [
@@ -265,45 +266,156 @@
                         ]
                     }
                 ],
-                schemaSubmenu: {}
+                newPartitionContextMenuData: {
+                    menuName: 'new',
+                    axios: {
+                        x: null,
+                        y: null
+                    },
+                    menulists: [
+                        {
+                            fnHandler: 'newPartitionSchema',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '新建'
+                        }
+                    ]
+                },
+                editPartitionContextMenuData: {
+                    menuName: 'edit',
+                    axios: {
+                        x: null,
+                        y: null
+                    },
+                    menulists: [
+                        {
+                            fnHandler: 'editPartitionSchema',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: 'Edit'
+                        },
+                        {
+                            fnHandler: 'delPartitionSchema',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: '删除'
+                        },
+                        {
+                            fnHandler: 'sharePartitionSchema',
+                            icoName: 'fa fa-home fa-fw',
+                            btnName: 'Share'
+                        }
+                    ]
+                },
+                partitionSchemaModalMode: 0, //  1:表示新建分区，2:表示编辑当前分区
+                editPartitionSchemaName: '',
+                editPartitionSchemaData: {}
             };
         },
         computed: {
             ...mapState([
                 'partitionSchemaModal',
                 'slaveServersModal',
-                'clusterSchemasModal'
+                'clusterSchemasModal',
+                'clusterschemas',
+                'partitionschemas'
             ])
         },
         mounted () {
-            this.$nextTick( function () {
-                this.$refs.leftMenu.updateOpened();
-                this.$refs.leftMenu.updateActiveName();
+            /*
+             *  1.数据库分区数不为0，则添加到分区子菜单栏中
+             *  2.数据库分区数为0，则把展开栏的小三角去掉
+             */
+            this.$nextTick(() => {
+                console.log( this.$refs.refPartitionSchema);
             });
+            if (this.partitionschemas.partitionschema.length !== 0){
+                console.log('数据库分区长度不为0');
+                // this.$emit('addPartitionSchemaMenu', this.partitionschemas);
+                this.schemaSubmenu = this.partitionschemas;
+            } else {
+                console.log( document.getElementById('leftMenuPartitionSchema') );
+            }
         },
         methods: {
             ...mapMutations([
                 'partitionSchemaShow',
                 'slaveServersShow',
-                'clusterSchemasShow'
+                'clusterSchemasShow',
+                'delPartitionSchemaStore'
             ]),
-            partitionSchemaClick () {
-                // 数据库分区schema
-                this.partitionSchemaShow(true);
-            },
             slaveServersClick () {
                 console.log('子服务器');
                 this.slaveServersShow(true);
             },
-            addPartitionSchemaMenu (data) {
-                this.schemaSubmenu = data;
-                console.log(this.schemaSubmenu);
-            },
+            /*
+             *  子组件在判断partitionschemas.partitionschema长度不为0，实现动态添加子菜单
+             * addPartitionSchemaMenu (data) {
+             *     this.schemaSubmenu = data;
+             *     console.log(this.schemaSubmenu);
+             * },
+             */
             clusterSchemasClick () {
                 this.clusterSchemasShow(true);
             },
             dbclickSchema () {
                 console.log('双击ok！！！');
+            },
+            optionclick (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('option7');
+            },
+            showContextMenu (data) {
+                event.preventDefault();
+                event.stopPropagation();
+                let x = event.clientX;
+                let y = event.clientY - 70;
+                data.axios = {
+                    x, y
+                };
+                this.editPartitionSchemaName = event.target.innerText;
+            },
+            dblClickEditPartitionSchema () {
+                this.editPartitionSchemaName = event.target.innerText;
+                this.editPartitionSchema();
+            },
+            newPartitionSchema () {
+                console.log('新建分区：');
+                this.partitionSchemaShow(true);
+                this.partitionSchemaModalMode = 1;
+            },
+            searchPartitionSchema () {
+                let data;
+                let i = -1;
+                console.log('修改前的分区');
+                console.log(this.partitionschemas);
+                for (data of this.partitionschemas.partitionschema) {
+                    i++;
+                    console.log(i);
+                    //  找到了返回下标
+                    if (data.name === this.editPartitionSchemaName) {
+                        this.editPartitionSchemaData = data;
+                        return i;
+                    } else {
+                        continue;
+                    }
+                }
+                alert('分区不存在！');
+                return -1;
+            },
+            editPartitionSchema () {
+                alert('edit schema');
+                this.searchPartitionSchema();
+                this.partitionSchemaShow(true);
+                this.partitionSchemaModalMode = 2;
+            },
+            delPartitionSchema () {
+                alert('del schema');
+                let index = this.searchPartitionSchema();
+                if ( index !== -1) {
+                    this.delPartitionSchemaStore(index);
+                }
+            },
+            sharePartitionSchema () {
+                alert('share schema');
             }
         }
     };
